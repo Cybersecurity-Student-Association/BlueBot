@@ -36,6 +36,10 @@ client.once('ready', async () =>  {
            message.reply('Inertia is a property of matter.');
            }
     });
+    client.on('guildMemberAdd', async (member)=> {
+        await member.guild.channels.cache.get('1112401885979222068').send({ files: ['./assets/CS2A.png'] });
+        await member.guild.channels.cache.get('1112401885979222068').send(`Welcome <@`+member.user.id+`>!\nPlease change your nickname to include your real name and make sure to officially join the club on Campus Groups (link found in <#779793774628175892>).`)
+    });
     console.log("Discord commands registered, BlueBot is ready for use.")
 });
 
