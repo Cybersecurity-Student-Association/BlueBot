@@ -27,6 +27,7 @@ client.once('ready', async () =>  {
     feed.items.forEach(item => {
         rssChannel.send(`New Update: ${item.title} - ${item.link}`);
     });
+    // Testing
 
     client.on('interactionCreate', async interaction => {
         if (interaction.type != InteractionType.ApplicationCommand) return;
