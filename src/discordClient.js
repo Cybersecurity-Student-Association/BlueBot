@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits, InteractionType } from "discord.js";
 import registeredCommands from "./registeredCommands.js";
+import Parser from "rss-parser";
 
 const client = new Client({ 
     intents: [ 
@@ -17,6 +18,16 @@ client.once('ready', async () =>  {
     registeredCommands.forEach(async command => {
         await client.application.commands.create(command.body.toJSON(), process.env.PROD ? undefined : process.env.GUILD);
     });
+
+    let parser = new Parser();
+    let feed = await parser.parseURL("http://lorem-rss.herokuapp.com/feed");
+    console.log(feed.title);
+
+    const rssChannel = client.channels.cache.get("1112401885979222068");
+    feed.items.forEach(item => {
+        rssChannel.send(`New Update: ${item.title} - ${item.link}`);
+    });
+
     client.on('interactionCreate', async interaction => {
         if (interaction.type != InteractionType.ApplicationCommand) return;
         const { commandName } = interaction;
