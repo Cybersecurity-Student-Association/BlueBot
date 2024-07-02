@@ -1,5 +1,6 @@
 import datetime, time
 import discord
+from commands.HashingCommands import HashingCommands
 
 class Commands:
     def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
@@ -10,6 +11,7 @@ class Commands:
         self.startTime = time.time()
 
         self.register_Commands()
+        HashingCommands(client=client, tree=tree, servers=servers)
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")
         async def ping(interaction: discord.Interaction):
