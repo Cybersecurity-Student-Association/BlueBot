@@ -1,11 +1,12 @@
 import discord
 
+
 class ContextMenu:
     def __init__(self, client, tree, servers):
         self.client = client
         self.tree = tree
         self.servers = servers
-        
+
         self.register_ContextMenu()
 
     def register_ContextMenu(self):

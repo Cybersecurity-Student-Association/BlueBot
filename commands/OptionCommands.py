@@ -1,6 +1,7 @@
 import discord
 from embeds import clubinfo, roles, rules
 
+
 class OptionCommand:
     def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
         self.client = client
@@ -9,7 +10,6 @@ class OptionCommand:
 
         self.register_OptionCommands()
 
-    
     def register_OptionCommands(self):
         @self.tree.command(name="embed", description="Posts the specified embed in the channel where the command was sent.")
         async def embed(interaction: discord.Interaction, choice: str):

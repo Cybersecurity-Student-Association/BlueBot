@@ -6,7 +6,8 @@ roles = discord.Embed(
     title="CS2A Discord Roles",
     color=discord.Colour(0).from_str("#1b2956"),
 )
-roles.set_footer(text="BlueBot | Made by CS2A Bot Developers", icon_url=cs2a_logo_url)
+roles.set_footer(text="BlueBot | Made by CS2A Bot Developers",
+                 icon_url=cs2a_logo_url)
 roles.set_thumbnail(url=cs2a_logo_url)
 
 roles.add_field(name="Admin & Officer Roles", value=f"""<@&{role_admin}>: Admins for this Discord server
@@ -15,7 +16,7 @@ roles.add_field(name="Admin & Officer Roles", value=f"""<@&{role_admin}>: Admins
              <@&{role_officer}>: Club officers, help with club operations, moderators for the discord server, ping for club questions or if you need assistance""")
 
 roles.add_field(name='Special Roles',
-             value=f"""These roles are given to special people or for activities.
+                value=f"""These roles are given to special people or for activities.
              <@&{role_bots}>: the machines
              <@&{role_bot_developers}>: Build and maintain *the machines*
              <@&{role_faculty}>: ODU personnel
@@ -31,7 +32,7 @@ roles.add_field(name='Majors', value=f"""<@&{role_cybersec}>: Cyber-Security Maj
              <@&{role_cybercrime}>: Cyber-Crime Major""")
 
 roles.add_field(name='For fun',
-             value=f"""<@&{role_blueteam}>: Cyber defense
+                value=f"""<@&{role_blueteam}>: Cyber defense
              <@&{role_redteam}>: Cyber offense""")
 
 roles.add_field(name="Noobs 2 Hackers", value=f"""N2H is where you can learn cyber concepts from other CS2A members

@@ -3,6 +3,7 @@ from embeds import clubinfo, roles, rules
 from utils.isOfficer import isOfficer
 from utils.log import log
 
+
 class BlueBotCommands:
     def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
         self.client = client
@@ -15,7 +16,7 @@ class BlueBotCommands:
         async def send_embed(interaction: discord.Interaction, channel_id: str, embed_name: str):
             if not isOfficer(interaction=interaction):
                 return
-            
+
             if embed_name == "clubinfo":
                 await self.client.get_channel(int(channel_id)).send(embed=clubinfo.clubinfo)
                 await interaction.response.send_message("Done", ephemeral=True)
@@ -41,7 +42,7 @@ class BlueBotCommands:
             await self.client.get_channel(int(target_channel_id)).send(content=message_content.content)
             await log(client=self.client, interaction=interaction, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{target_message_id} in <#{target_channel_id}>.")
             await interaction.response.send_message("Done", ephemeral=True)
-        
+
         @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another")
         async def edit(interaction: discord.Interaction, original_channel_id: str, original_message_id: str, new_message_id: str):
             if not isOfficer(interaction=interaction):

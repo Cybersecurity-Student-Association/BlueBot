@@ -46,7 +46,7 @@ async def presence():
 
     while not client.is_closed():
         status = random.choice(presence_states)
-        await client.change_presence( activity=status )
+        await client.change_presence(activity=status)
         await asyncio.sleep(3600)
 
 if __name__ == "__main__":

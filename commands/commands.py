@@ -1,4 +1,5 @@
-import datetime, time
+import datetime
+import time
 import discord
 
 from commands.BlueBotCommands import BlueBotCommands
@@ -6,6 +7,7 @@ from commands.ContextMenu import ContextMenu
 from commands.HashingCommands import HashingCommands
 from commands.SubCommand import SubCommand
 from commands.OptionCommands import OptionCommand
+
 
 class Commands:
     def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
@@ -20,13 +22,12 @@ class Commands:
         ContextMenu(client=client, tree=tree, servers=servers)
         BlueBotCommands(client=client, tree=tree, servers=servers)
         OptionCommand(client=client, tree=tree, servers=servers)
-        #SubCommand(client=client, tree=tree, servers=servers)
+        # SubCommand(client=client, tree=tree, servers=servers)
 
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")
         async def ping(interaction: discord.Interaction):
             await interaction.response.send_message(f'Pong: {round(self.client.latency, 3)}ms', ephemeral=True)
-
 
         @self.tree.command(name="uptime", description="Uptime of BlueBot")
         async def uptime(interaction: discord.Interaction):
