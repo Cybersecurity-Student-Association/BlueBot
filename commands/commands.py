@@ -2,6 +2,7 @@ import datetime, time
 import discord
 from commands.ContextMenu import ContextMenu
 from commands.HashingCommands import HashingCommands
+from commands.OptionCommands import OptionCommand
 
 class Commands:
     def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
@@ -14,6 +15,7 @@ class Commands:
         self.register_Commands()
         HashingCommands(client=client, tree=tree, servers=servers)
         ContextMenu(client=client, tree=tree, servers=servers)
+        OptionCommand(client=client, tree=tree, servers=servers)
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")
         async def ping(interaction: discord.Interaction):
