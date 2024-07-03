@@ -8,5 +8,4 @@ cs2a_cg_url = os.environ["cs2acgurl"]
 SERVER = int(os.environ["GUILD_ID"])
 JOIN_MESSAGES_CHANNEL = int(os.environ["JOIN_MESSAGES_CHANNEL"])
 CAMPUSGROUPS_MESSAGE_LINK = os.environ["CAMPUSGROUPS_MESSAGE_LINK"]
-embed_channel = int(os.environ["embed_channel"])
 log_channel = int(os.environ["log_channel"])

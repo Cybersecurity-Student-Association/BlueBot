@@ -1,7 +1,7 @@
 import discord
 import os
 
-from variables.variables import SERVER, JOIN_MESSAGES_CHANNEL, CAMPUSGROUPS_MESSAGE_LINK, embed_channel
+from variables.variables import SERVER, JOIN_MESSAGES_CHANNEL, CAMPUSGROUPS_MESSAGE_LINK
 
 
 class Events:
@@ -16,9 +16,6 @@ class Events:
             if message.author == self.client.user:
                 return
 
-            if message.channel.id == embed_channel:
-                if message.content == "rules":
-                    message
             return
             if message.mentions.__contains__(self.client.user):
                 await message.reply("Don\'t @ me.")
