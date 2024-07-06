@@ -46,9 +46,11 @@ class BlueBotCommands:
         @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another")
         async def edit(interaction: discord.Interaction, original_channel_id: str, original_message_id: str, new_message_id: str):
             if not isOfficer(interaction=interaction):
+                interaction.response.send_message("You are not an officer!", ephemeral=True)
                 return
             old_message = await self.client.get_channel(int(original_channel_id)).fetch_message(int(original_message_id))
             new_message = await self.client.get_channel(interaction.channel_id).fetch_message(int(new_message_id))
             await old_message.edit(content=new_message.content)
-            await log(client=self.client, interaction=interaction, content=f"<@{interaction.user.id}> edited BlueBot's https://discord.com/channels/{interaction.guild_id}/{original_channel_id}/{original_message_id} with https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{new_message_id}")
+            await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's https://discord.com/channels/{interaction.guild_id}/{original_channel_id}/{original_message_id} with https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{new_message_id}")
             await interaction.response.send_message("Done", ephemeral=True)
+            return
