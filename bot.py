@@ -6,6 +6,7 @@ import discord
 from commands.Commands import Commands
 from events.Events import Events
 from variables.variables import SERVER, TOKEN
+from utils.log import log
 
 
 ### Register intents and client ###
@@ -26,7 +27,6 @@ servers = [discord.Object(id=SERVER)]
 async def on_ready():
 
     Commands(client=client, tree=tree, servers=servers)
-    await client.wait_until_ready()
     Events(client=client)
     await client.wait_until_ready()
 
@@ -37,6 +37,7 @@ async def on_ready():
     await client.wait_until_ready()
 
     print(f'{client.user} is ready and listening')
+    #await log(client=client, content=f'{client.user} is ready and listening')
 
 
 async def presence():
