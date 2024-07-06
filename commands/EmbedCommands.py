@@ -1,5 +1,5 @@
 import discord
-from embeds import clubinfo, roles, rules
+from embeds import clubinfo as embed_clubinfo, roles as embed_roles, rules as embed_rules
 
 
 class EmbedCommands:
@@ -12,13 +12,13 @@ class EmbedCommands:
 
     def register_EmbedCommands(self):
         @self.tree.command(name="clubinfo", description="Posts the specified embed in the channel where the command was sent.")
-        async def roles(interaction: discord.Interaction):
-            await interaction.response.send_message(embed=clubinfo.clubinfo, ephemeral=True)
+        async def clubinfo(interaction: discord.Interaction):
+            await interaction.response.send_message(embed=embed_clubinfo.clubinfo, ephemeral=True)
 
         @self.tree.command(name="rules", description="Posts the specified embed in the channel where the command was sent.")
-        async def roles(interaction: discord.Interaction):
-            await interaction.response.send_message(embed=rules.rules, ephemeral=True)
+        async def rules(interaction: discord.Interaction):
+            await interaction.response.send_message(embed=embed_rules.rules, ephemeral=True)
 
         @self.tree.command(name="roles", description="Posts the specified embed in the channel where the command was sent.")
         async def roles(interaction: discord.Interaction):
-            await interaction.response.send_message(embed=roles.roles, ephemeral=True)
+            await interaction.response.send_message(embed=embed_roles.roles, ephemeral=True)
