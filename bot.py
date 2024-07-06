@@ -14,6 +14,8 @@ from utils.log import log
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.guild_reactions = True
+intents.guild_scheduled_events = True
 client = discord.Client(intents=intents)
 
 

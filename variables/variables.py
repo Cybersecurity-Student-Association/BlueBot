@@ -11,3 +11,4 @@ JOIN_MESSAGES_CHANNEL = int(os.environ["JOIN_MESSAGES_CHANNEL"])
 CAMPUSGROUPS_MESSAGE_LINK = os.environ["CAMPUSGROUPS_MESSAGE_LINK"]
 log_channel = int(os.environ["log_channel"])
 rss_channel = int(os.environ["rss_channel"])
+events_channel = int(os.environ["events_channel"])

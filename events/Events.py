@@ -2,13 +2,14 @@ import discord
 import os
 
 from variables.variables import SERVER, JOIN_MESSAGES_CHANNEL, CAMPUSGROUPS_MESSAGE_LINK
-
+from events.EventThreads import EventThreads
 
 class Events:
     def __init__(self, client: discord.Client):
         self.client = client
 
         self.register_events()
+        EventThreads(client=client)
 
     def register_events(self):
         @self.client.event
