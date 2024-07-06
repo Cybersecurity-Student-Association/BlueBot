@@ -12,3 +12,5 @@ CAMPUSGROUPS_MESSAGE_LINK = os.environ["CAMPUSGROUPS_MESSAGE_LINK"]
 log_channel = int(os.environ["log_channel"])
 rss_channel = int(os.environ["rss_channel"])
 events_channel = int(os.environ["events_channel"])
+
+debug = bool(os.environ["debug"])
