@@ -5,6 +5,7 @@ import discord
 
 from commands.Commands import Commands
 from events.Events import Events
+from utils.RSS import RSS
 from variables.variables import SERVER, TOKEN
 from utils.log import log
 
@@ -28,6 +29,7 @@ async def on_ready():
 
     Commands(client=client, tree=tree, servers=servers)
     Events(client=client)
+    RSS(client=client)
     await client.wait_until_ready()
 
     await tree.sync()
