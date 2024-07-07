@@ -50,13 +50,20 @@ class EventThreads:
         async def on_scheduled_event_update(event_before: discord.ScheduledEvent, event_after: discord.ScheduledEvent):
             channel = self.client.get_channel(event_threads_channel)
             threads = channel.threads
-            if event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended:
+            if event_before.name != event_after.name:
+                for thread in threads:
+                    if event_before.name in thread.name:
+                        await thread.edit(name=event_after.name + " (" + thread.name.split("(")[-1])
+                        message = await channel.fetch_message(thread.id)
+                        await message.edit(content=event_after.name + " (" + thread.name.split("(")[-1])
+                        return
+            elif event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_before.name + " (finished)", archived=True, locked=True)
                         message = await channel.fetch_message(thread.id)
                         await message.edit(content=event_before.name + " (finished)")
-                        thread.send(f"@everyone {event_after.name} is over.")
+                        await thread.send(f"@everyone {event_after.name} is over.")
                         return
             elif event_after.status == discord.EventStatus.active:
                 for thread in threads:
@@ -65,13 +72,6 @@ class EventThreads:
                         message = await channel.fetch_message(thread.id)
                         await message.edit(content=event_after.name + " (right now)")
                         await thread.send(f"@everyone {event_after.name} has started.")
-                        return
-            elif event_before.name != event_after.name:
-                for thread in threads:
-                    if event_before.name in thread.name:
-                        await thread.edit(name=event_after.name)
-                        message = await channel.fetch_message(thread.id)
-                        await message.edit(content=event_after.name)
                         return
 
         @self.client.event
