@@ -46,6 +46,7 @@ class BlueBotCommands:
         @discord.app_commands.choices(embed_name=self.valid_embeds)
         async def send_embed(interaction: discord.Interaction, channel: discord.app_commands.Choice[int], embed_name: discord.app_commands.Choice[int]):
             if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = int(get_channel_by_name(
                 client=self.client, target_name=channel.name).id)
@@ -71,6 +72,7 @@ class BlueBotCommands:
         @discord.app_commands.choices(channel=self.all_channels)
         async def send(interaction: discord.Interaction, channel: discord.app_commands.Choice[int], target_message_id: str):
             if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = int(get_channel_by_name(
                 client=self.client, target_name=channel.name).id)
@@ -83,8 +85,7 @@ class BlueBotCommands:
         @discord.app_commands.choices(channel=self.all_channels)
         async def edit(interaction: discord.Interaction, channel: discord.app_commands.Choice[int], original_message_id: str, new_message_id: str):
             if not isOfficer(interaction=interaction):
-                interaction.response.send_message(
-                    "You are not an officer!", ephemeral=True)
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = int(get_channel_by_name(
                 client=self.client, target_name=channel.name).id)
