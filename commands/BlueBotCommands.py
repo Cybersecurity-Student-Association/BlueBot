@@ -101,6 +101,9 @@ class BlueBotCommands:
 
         @self.tree.command(name="purge", description="Delete all messages in a channel")
         async def purge(interaction: discord.Interaction):
-            interaction.channel.purge()
-            interaction.response.send_message("Done", ephemeral=True)
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            await interaction.response.send_message("Done", ephemeral=True)
             await log(client=self.client, content=f"<@{interaction.user.id}> purged all messages in <#{interaction.channel.id}>")
+            await interaction.channel.purge()
