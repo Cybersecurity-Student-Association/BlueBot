@@ -94,3 +94,9 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{original_message_id} with https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{new_message_id}")
             await interaction.response.send_message("Done", ephemeral=True)
             return
+
+        @self.tree.command(name="purge", description="Delete all messages in a channel")
+        async def purge(interaction: discord.Interaction):
+            interaction.channel.purge()
+            interaction.response.send_message("Done", ephemeral=True)
+            await log(client=self.client, content=f"<@{interaction.user.id}> purged all messages in <#{interaction.channel.id}>")
