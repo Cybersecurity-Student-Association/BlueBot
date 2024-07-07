@@ -107,4 +107,43 @@ class BlueBotCommands:
             await interaction.response.send_message("Done", ephemeral=True)
             await interaction.channel.purge(limit=count)
             await log(client=self.client, content=f"<@{interaction.user.id}> purged all messages in <#{interaction.channel.id}>")
-            await interaction.channel.purge()
+
+        @self.tree.context_menu(name="Send to #rules")
+        async def send_to_rules(interaction: discord.Interaction, message: discord.Message):
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            target_channel_id = rules_channel
+            await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
+            await interaction.response.send_message("Done", ephemeral=True)
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
+
+        @self.tree.context_menu(name="Send to #club-information")
+        async def send_to_club_information(interaction: discord.Interaction, message: discord.Message):
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            target_channel_id = club_information_channel
+            await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
+            await interaction.response.send_message("Done", ephemeral=True)
+
+        @self.tree.context_menu(name="Send to #resources")
+        async def send_to_resources(interaction: discord.Interaction, message: discord.Message):
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            target_channel_id = resources_channel
+            await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
+            await interaction.response.send_message("Done", ephemeral=True)
+
+        @self.tree.context_menu(name="Send to #stuff-to-check-out")
+        async def send_to_stuff_to_check_out(interaction: discord.Interaction, message: discord.Message):
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            target_channel_id = stuff_to_check_out_channel
+            await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
+            await interaction.response.send_message("Done", ephemeral=True)
