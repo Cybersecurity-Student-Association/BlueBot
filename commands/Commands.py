@@ -22,7 +22,7 @@ class Commands:
         ContextMenu(client=client, tree=tree, servers=servers)
         BlueBotCommands(client=client, tree=tree, servers=servers)
         EmbedCommands(client=client, tree=tree, servers=servers)
-        # SubCommand(client=client, tree=tree, servers=servers)
+        SubCommand(client=client, tree=tree, servers=servers)
 
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")
