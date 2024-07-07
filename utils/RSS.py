@@ -2,8 +2,8 @@ import feedparser
 from datetime import datetime, timedelta
 from discord.ext import tasks
 import discord
-from variables.variables import rss_channel
-
+from variables.variables import debug
+from variables.channels import rss_channel
 
 URL = "https://feeds.feedburner.com/TheHackersNews"
 # URL = "http://lorem-rss.herokuapp.com/feed"
@@ -23,7 +23,7 @@ class RSS:
     async def rssSendMessage(self):
         await self.client.wait_until_ready()
         channel = self.client.get_channel(rss_channel)
-        # await channel.send("Checking for RSS")
+        if debug: await channel.send("Checking for RSS")
         feed = feedparser.parse(self.url)
 
         if self.first_run:
