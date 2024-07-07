@@ -89,6 +89,9 @@ class BlueBotCommands:
             target_channel_id = int(get_channel_by_name(
                 client=self.client, target_name=channel.name).id)
             old_message = await self.client.get_channel(target_channel_id).fetch_message(int(original_message_id))
+            if old_message.author.name != self.client.user:
+                await interaction.response.send_message(content=f"The author of the target message is not {self.client.user}!", ephemeral=True)
+                return
             new_message = await self.client.get_channel(interaction.channel_id).fetch_message(int(new_message_id))
             await old_message.edit(content=new_message.content)
             await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{original_message_id} with https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{new_message_id}")
