@@ -11,3 +11,5 @@ cs2a_cg_url = os.environ["cs2acgurl"]
 
 debug = bool(os.environ["debug"])
 debug = False
+
+hardware_exchange_program_gsheetid = os.environ["hardware_exchange_program_gsheetid"]

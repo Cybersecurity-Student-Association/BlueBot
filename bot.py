@@ -8,12 +8,14 @@ from events.Events import Events
 from utils.RSS import RSS
 from variables.variables import SERVER, TOKEN
 from utils.log import log
+from utils.HardwareExchangeProgram import HardwareExchangeProgram
 
 
 ### Register intents and client ###
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.guilds = True
 intents.guild_reactions = True
 intents.guild_scheduled_events = True
 client = discord.Client(intents=intents)
@@ -31,7 +33,7 @@ async def on_ready():
 
     Commands(client=client, tree=tree, servers=servers)
     Events(client=client)
-    RSS(client=client)
+    HardwareExchangeProgram(client=client, tree=tree)
     await client.wait_until_ready()
 
     await tree.sync()
