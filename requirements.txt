@@ -2,3 +2,4 @@ discord
 python_dotenv
 feedparser
 pytz
+pandas
