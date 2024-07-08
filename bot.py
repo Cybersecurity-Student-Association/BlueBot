@@ -48,7 +48,27 @@ async def on_ready():
 
 async def presence():
     presence_states = [
-        discord.CustomActivity(name="I\'m blue, da ba dee da ba di")
+        #discord.CustomActivity(name="I\'m blue, da ba dee da ba di"),
+        discord.Activity(type=discord.ActivityType.watching, name='John Hammond'),
+        discord.Activity(type=discord.ActivityType.watching, name='The PC Security Channel'),
+        discord.Activity(type=discord.ActivityType.watching, name='NetworkChuck'),
+        discord.Activity(type=discord.ActivityType.watching, name='HackerSploit'),
+        discord.Activity(type=discord.ActivityType.watching, name='Infosec'),
+        discord.Activity(type=discord.ActivityType.watching, name='ComputerPhile'),
+        discord.Activity(type=discord.ActivityType.watching, name='David Bombal'),
+        discord.Activity(type=discord.ActivityType.watching, name='Dion Training'),
+        discord.Activity(type=discord.ActivityType.watching, name='Hak5'),
+        discord.Activity(type=discord.ActivityType.watching, name='NahamSec'),
+        discord.Activity(type=discord.ActivityType.playing, name='with a Flipper Zero'),
+        discord.Activity(type=discord.ActivityType.playing, name='with a WiFi Pineapple'),
+        discord.Activity(type=discord.ActivityType.playing, name='with a Rubber Ducky'),
+        discord.Activity(type=discord.ActivityType.playing, name='Vulnhub'),
+        discord.Activity(type=discord.ActivityType.playing, name='picoCTF'),
+        discord.Activity(type=discord.ActivityType.playing, name='Hack The Box'),
+        discord.Activity(type=discord.ActivityType.playing, name='TryHackMe'),
+        discord.Activity(type=discord.ActivityType.playing, name='Ghidra'),
+        discord.Activity(type=discord.ActivityType.listening, name='The WAN Show'),
+        discord.CustomActivity(name='Studying for Security+'),
     ]
 
     while not client.is_closed():
