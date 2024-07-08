@@ -1,12 +1,16 @@
 import discord
-from variables.variables import debug
+from variables.variables import debug, SERVER
 from variables.channels import event_threads_channel
+from discord.ext import tasks
+from datetime import datetime, timedelta
+from pytz import utc
 
 class EventThreads:
     def __init__(self, client: discord.Client):
         self.client = client
 
         self.register_EventThreads()
+        self.send_reminder_message.start()
 
     def register_EventThreads(self):
         @self.client.event
@@ -42,8 +46,8 @@ class EventThreads:
                 print(f'{event.name} created')
 
             channel = self.client.get_channel(event_threads_channel)
-            message = await channel.send(event.name + " (scheduled)")
-            thread = await message.create_thread(name=event.name + " (scheduled)")
+            # message = await channel.send(event.name + " (scheduled)")
+            thread = await channel.create_thread(name=event.name + " (scheduled)", invitable=False)
             await thread.add_user(event.creator)
 
         @self.client.event
@@ -54,23 +58,19 @@ class EventThreads:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (" + thread.name.split("(")[-1])
-                        message = await channel.fetch_message(thread.id)
-                        await message.edit(content=event_after.name + " (" + thread.name.split("(")[-1])
+                        # message = await channel.fetch_message(thread.id)
+                        # await message.edit(content=event_after.name + " (" + thread.name.split("(")[-1])
                         return
             elif event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_before.name + " (finished)", archived=True, locked=True)
-                        message = await channel.fetch_message(thread.id)
-                        await message.edit(content=event_before.name + " (finished)")
-                        await thread.send(f"@everyone {event_after.name} is over.")
+                        await thread.send(f"{event_after.name} is over.")
                         return
             elif event_after.status == discord.EventStatus.active:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (right now)")
-                        message = await channel.fetch_message(thread.id)
-                        await message.edit(content=event_after.name + " (right now)")
                         await thread.send(f"@everyone {event_after.name} has started.")
                         return
 
@@ -82,9 +82,9 @@ class EventThreads:
             threads = channel.threads
             for thread in threads:
                 if event.name in thread.name:
-                    message = await channel.fetch_message(thread.id)
-                    await message.edit(content=event.name + " (canceled)")
-                    await thread.send(f"@everyone {event.name} has been canceled.")
+                    # message = await channel.fetch_message(thread.id)
+                    # await message.edit(content=event.name + " (canceled)")
+                    await thread.send(f"{event.name} has been canceled.")
                     await thread.edit(name=event.name + " (canceled)", archived=True, locked=True)
                     return
 
@@ -107,3 +107,48 @@ class EventThreads:
                 if event.name in thread.name:
                     await thread.remove_user(username)
                     return
+
+        @self.client.event
+        async def on_raw_thread_member_remove(thread: discord.RawThreadMembersUpdate):
+            removed_member_id = int(thread.data["removed_member_ids"][0])
+            event_thread = self.client.get_guild(SERVER).get_channel(
+                event_threads_channel).get_thread(thread.thread_id)
+            events = await self.client.get_guild(SERVER).fetch_scheduled_events()
+            for event in events:
+                if event.name in event_thread.name:
+                    async for user in event.users():
+                        if user.id == removed_member_id:
+                            await event_thread.send(content=f'<@{removed_member_id}> please remove yourself from the "Interested" in the event details to leave this channel. {event.url}')
+                            return
+
+    @tasks.loop(hours=1)
+    async def send_reminder_message(self):
+        events = await self.client.get_guild(SERVER).fetch_scheduled_events()
+        threads = self.client.get_channel(event_threads_channel).threads
+        for event in events:
+            time_difference = event.start_time - datetime.now().astimezone(tz=utc)
+            if timedelta(days=1) <= time_difference and time_difference < timedelta(days=1, hours=1):
+                for thread in threads:
+                    if event.name in thread.name:
+                        await thread.send(f'@everyone {event.name} is starting **TOMORROW**! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        break
+            elif timedelta(days=3) <= time_difference and time_difference < timedelta(days=3, hours=1):
+                for thread in threads:
+                    if event.name in thread.name:
+                        await thread.send(f'@everyone {event.name} is starting in **3 days**! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        break
+            elif timedelta(days=7) <= time_difference and time_difference < timedelta(days=7, hours=1):
+                for thread in threads:
+                    if event.name in thread.name:
+                        await thread.send(f'@everyone {event.name} is starting in 7 days! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        break
+            elif timedelta(days=14) <= time_difference and time_difference < timedelta(days=14, hours=1):
+                for thread in threads:
+                    if event.name in thread.name:
+                        await thread.send(f'@everyone {event.name} is starting in two weeks! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        break
+            elif timedelta(days=28) <= time_difference and time_difference < timedelta(days=28, hours=1):
+                for thread in threads:
+                    if event.name in thread.name:
+                        await thread.send(f'@everyone {event.name} is starting in four weeks! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        break
