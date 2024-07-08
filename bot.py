@@ -43,6 +43,7 @@ async def on_ready():
     await client.wait_until_ready()
 
     print(f'{client.user} is ready and listening')
+    RSS(client=client)
     #await log(client=client, content=f'{client.user} is ready and listening')
 
 
