@@ -69,13 +69,18 @@ class BlueBotCommands:
             await interaction.response.send_message("Not a valid embed", ephemeral=True)
 
         @self.tree.command(name="send", description="Send a message on behalf of BlueBot")
-        @discord.app_commands.choices(channel=self.all_channels)
-        async def send(interaction: discord.Interaction, channel: discord.app_commands.Choice[int], target_message_id: str):
+        # @discord.app_commands.choices(channel=self.all_channels)
+        # async def send(interaction: discord.Interaction, channel: discord.app_commands.Choice[int], target_message_id: str):
+        async def send(interaction: discord.Interaction, target_channel: str, target_message_id: str):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
-            target_channel_id = int(get_channel_by_name(
-                client=self.client, target_name=channel.name).id)
+            # target_channel_name = channel.name
+            try:
+                target_channel_id = int(target_channel)
+            except TypeError:
+                target_channel_id = int(get_channel_by_name(
+                    client=self.client, target_name=target_channel).id)
             message = await self.client.get_guild(int(interaction.guild_id)).get_channel(int(interaction.channel_id)).fetch_message(int(target_message_id))
             await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
             await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{target_message_id} in <#{target_channel_id}>.")
