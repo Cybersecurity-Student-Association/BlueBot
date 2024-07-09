@@ -32,3 +32,7 @@ class Commands:
         @self.tree.command(name="uptime", description="Uptime of BlueBot")
         async def uptime(interaction: discord.Interaction):
             await interaction.response.send_message(str(datetime.timedelta(seconds=int(round(time.time()-self.startTime)))), ephemeral=True)
+
+        @self.tree.command(name="github", description="Github repository for BlueBot")
+        async def github(interaction: discord.Interaction):
+            await interaction.response.send_message("https://github.com/Cybersecurity-Student-Association/BlueBot", ephemeral=True)
