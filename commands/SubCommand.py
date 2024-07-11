@@ -2,10 +2,9 @@ import discord
 from discord.app_commands import Choice
 
 class SubCommand:
-    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
         self.tree = tree
-        self.servers = servers
         self.register_SubCommands()
 
     def register_SubCommands(self):

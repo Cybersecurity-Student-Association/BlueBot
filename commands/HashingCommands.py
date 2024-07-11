@@ -4,10 +4,9 @@ import hashlib
 
 
 class HashingCommands:
-    def __init__(self, client, tree, servers):
+    def __init__(self, client, tree):
         self.client = client
         self.tree = tree
-        self.servers = servers
         self.register_HashingCommands()
 
     def register_HashingCommands(self):

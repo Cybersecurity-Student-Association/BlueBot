@@ -2,10 +2,9 @@ import discord
 
 
 class ContextMenu:
-    def __init__(self, client, tree, servers):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
         self.tree = tree
-        self.servers = servers
 
         self.register_ContextMenu()
 

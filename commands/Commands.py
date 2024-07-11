@@ -10,19 +10,18 @@ from commands.EmbedCommands import EmbedCommands
 
 
 class Commands:
-    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
         self.tree = tree
-        self.servers = servers
 
         self.startTime = time.time()
 
         self.register_Commands()
-        HashingCommands(client=client, tree=tree, servers=servers)
-        ContextMenu(client=client, tree=tree, servers=servers)
-        BlueBotCommands(client=client, tree=tree, servers=servers)
-        EmbedCommands(client=client, tree=tree, servers=servers)
-        SubCommand(client=client, tree=tree, servers=servers)
+        HashingCommands(client=client, tree=tree)
+        ContextMenu(client=client, tree=tree)
+        BlueBotCommands(client=client, tree=tree)
+        EmbedCommands(client=client, tree=tree)
+        SubCommand(client=client, tree=tree)
 
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")

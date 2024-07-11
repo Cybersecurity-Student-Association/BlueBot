@@ -7,10 +7,9 @@ from variables.channels import *
 
 
 class BlueBotCommands:
-    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
         self.tree = tree
-        self.servers = servers
 
         self.all_channels = []
         self.all_channels.append(discord.app_commands.Choice(

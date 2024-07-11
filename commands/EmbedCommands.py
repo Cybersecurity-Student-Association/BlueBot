@@ -3,10 +3,9 @@ from embeds import clubinfo as embed_clubinfo, roles as embed_roles, rules as em
 
 
 class EmbedCommands:
-    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree, servers):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
         self.tree = tree
-        self.servers = servers
 
         self.register_EmbedCommands()
 

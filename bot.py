@@ -31,8 +31,9 @@ servers = [discord.Object(id=SERVER)]
 @client.event
 async def on_ready():
 
-    Commands(client=client, tree=tree, servers=servers)
+    Commands(client=client, tree=tree)
     Events(client=client)
+
     HardwareExchangeProgram(client=client, tree=tree)
     await client.wait_until_ready()
 
