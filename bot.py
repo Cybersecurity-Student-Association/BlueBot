@@ -5,6 +5,7 @@ import discord
 
 from commands.Commands import Commands
 from events.Events import Events
+from utils.CyberCup import CyberCup
 from utils.HardwareExchangeProgram import HardwareExchangeProgram
 from utils.RSS import RSS
 from variables.variables import SERVER, TOKEN, debug
@@ -28,6 +29,7 @@ async def on_ready():
     Commands(client=client, tree=tree)
     Events(client=client)
 
+    CyberCup(client=client, tree=tree)
     HardwareExchangeProgram(client=client, tree=tree)
     await client.wait_until_ready()
 

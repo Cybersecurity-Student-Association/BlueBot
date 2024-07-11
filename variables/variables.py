@@ -12,3 +12,4 @@ cs2a_cg_url = os.environ["cs2acgurl"]
 debug = bool(int(os.environ["debugging"]))
 
 hardware_exchange_program_gsheetid = os.environ["hardware_exchange_program_gsheetid"]
+cyber_cup_gsheetid = os.environ["cyber_cup_gsheet"]
