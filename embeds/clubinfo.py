@@ -3,7 +3,7 @@ from variables.variables import cs2a_cg_url, cs2a_logo_url
 
 clubinfo = discord.Embed(
     title="CS2A Club Info",
-    color=discord.Colour(0).from_str("#1b2956"),
+    color=0x1b2956,
 )
 
 clubinfo.set_footer(

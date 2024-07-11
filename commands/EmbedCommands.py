@@ -10,14 +10,14 @@ class EmbedCommands:
         self.register_EmbedCommands()
 
     def register_EmbedCommands(self):
-        @self.tree.command(name="clubinfo", description="Posts the specified embed in the channel where the command was sent.")
+        @self.tree.command(name="clubinfo", description="Posts information about the club")
         async def clubinfo(interaction: discord.Interaction):
             await interaction.response.send_message(embed=embed_clubinfo.clubinfo, ephemeral=True)
 
-        @self.tree.command(name="rules", description="Posts the specified embed in the channel where the command was sent.")
+        @self.tree.command(name="rules", description="Posts the rules")
         async def rules(interaction: discord.Interaction):
             await interaction.response.send_message(embed=embed_rules.rules, ephemeral=True)
 
-        @self.tree.command(name="roles", description="Posts the specified embed in the channel where the command was sent.")
+        @self.tree.command(name="roles", description="Posts the roles and their descriptions")
         async def roles(interaction: discord.Interaction):
             await interaction.response.send_message(embed=embed_roles.roles, ephemeral=True)

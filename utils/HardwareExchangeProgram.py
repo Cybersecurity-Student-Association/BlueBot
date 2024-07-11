@@ -25,29 +25,29 @@ class HardwareExchangeProgram:
     @tasks.loop(minutes=1)
     async def read_sheet(self):
         df = pd.read_csv(gsheet_url)
-        for col_counter in range(0, len(df["Timestamp"])):
+        for row in range(0, len(df["Timestamp"])):
             now = datetime.now().astimezone(tz=utc)
             time = datetime.strptime(
-                df["Timestamp"][col_counter], "%m/%d/%Y %H:%M:%S").astimezone(tz=utc)
+                df["Timestamp"][row], "%m/%d/%Y %H:%M:%S").astimezone(tz=utc)
             if now > time and now - time <= timedelta(minutes=1):
-                product = df["Equipment type (PC, switch, server, etc.)"][col_counter] + \
-                    ": " + df["Manufacturer and Model"][col_counter]
+                product = df["Equipment type (PC, switch, server, etc.)"][row] + \
+                    ": " + df["Manufacturer and Model"][row]
                 channel = self.client.get_guild(SERVER).get_channel(
                     hardware_exchange_program_channel)
 
-                name = df["Enter your name"][col_counter]
-                equipment = df["Equipment type (PC, switch, server, etc.)"][col_counter]
-                model = df["Manufacturer and Model"][col_counter]
-                quantity = df["Quantity"][col_counter]
-                images = df["Upload images"][col_counter]
-                notes = df["Aditional Device notes"][col_counter]
+                name = df["Enter your name"][row]
+                equipment = df["Equipment type (PC, switch, server, etc.)"][row]
+                model = df["Manufacturer and Model"][row]
+                quantity = df["Quantity"][row]
+                images = df["Upload images"][row]
+                notes = df["Aditional Device notes"][row]
                 first_message = f"Name: {name}\nEquipment type: {equipment}\nManufacturer and Model: {model}\nQuantity: {quantity}\nImages: {images}\nAdditional notes: {notes}"
 
                 for tag_id in channel._available_tags:
                     if channel._available_tags[tag_id].name == "open":
                         forum = await channel.create_thread(name=product, content=first_message, applied_tags=[channel._available_tags[tag_id]], suppress_embeds=True)
                         user = get_user_by_name(
-                            client=self.client, username=df["Enter your Discord (no nicknames or @)"][col_counter])
+                            client=self.client, username=df["Enter your Discord (no nicknames or @)"][row])
                         await forum.thread.send(content=f'<@{user.id}>')
                         break
 
@@ -67,7 +67,7 @@ class HardwareExchangeProgram:
                 return
 
             forum = channel.get_thread(interaction.channel.id)
-            async for message in forum.history(limit=5, oldest_first=True):
+            async for message in forum.history(limit=2, oldest_first=True):
                 for tag_id in channel._available_tags:
                     if channel._available_tags[tag_id].name == "fullfilled" and str(interaction.user.id) in message.content:
                         await interaction.response.send_message("Done", ephemeral=True)

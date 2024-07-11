@@ -4,7 +4,7 @@ from variables.roles import *
 
 roles = discord.Embed(
     title="CS2A Discord Roles",
-    color=discord.Colour(0).from_str("#1b2956"),
+    color=0x1b2956,
 )
 roles.set_footer(text="BlueBot | Made by CS2A Bot Developers",
                  icon_url=cs2a_logo_url)

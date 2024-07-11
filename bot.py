@@ -5,10 +5,10 @@ import discord
 
 from commands.Commands import Commands
 from events.Events import Events
-from utils.RSS import RSS
-from variables.variables import SERVER, TOKEN
-from utils.log import log
 from utils.HardwareExchangeProgram import HardwareExchangeProgram
+from utils.RSS import RSS
+from variables.variables import SERVER, TOKEN, debug
+from utils.log import log
 
 
 ### Register intents and client ###
@@ -19,14 +19,8 @@ intents.guilds = True
 intents.guild_reactions = True
 intents.guild_scheduled_events = True
 client = discord.Client(intents=intents)
-
-
-### Slash Commands ###
 tree = discord.app_commands.CommandTree(client=client)
-servers = [discord.Object(id=SERVER)]
 
-
-### Listeners ###
 
 @client.event
 async def on_ready():
@@ -45,7 +39,8 @@ async def on_ready():
 
     print(f'{client.user} is ready and listening')
     RSS(client=client)
-    #await log(client=client, content=f'{client.user} is ready and listening')
+    if debug:
+        await log(client=client, content=f'{client.user} is ready and listening')
 
 
 async def presence():

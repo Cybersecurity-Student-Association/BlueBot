@@ -103,7 +103,7 @@ class BlueBotCommands:
             await interaction.response.send_message("Done", ephemeral=True)
             return
 
-        @self.tree.command(name="purge", description="Delete the 10 most recent messages in a channel")
+        @self.tree.command(name="purge", description="Delete an X amount of messages in a channel")
         async def purge(interaction: discord.Interaction, count: int):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)

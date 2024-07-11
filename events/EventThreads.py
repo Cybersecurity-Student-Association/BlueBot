@@ -73,6 +73,12 @@ class EventThreads:
                         await thread.edit(name=event_after.name + " (right now)")
                         await thread.send(f"@everyone {event_after.name} has started.")
                         return
+            elif event_after.status == discord.EventStatus.scheduled:
+                for thread in threads:
+                    if event_before.name in thread.name:
+                        await thread.edit(name=event_after.name + " (scheduled)")
+                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again.")
+                        return
 
         @self.client.event
         async def on_scheduled_event_delete(event: discord.ScheduledEvent):

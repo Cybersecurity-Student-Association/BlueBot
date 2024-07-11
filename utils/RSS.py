@@ -15,25 +15,20 @@ class RSS:
         self.client = client
         self.url = URL
         self.rssSendMessage.start()
-        self.first_run = True
+
         self.old_feed = feedparser.parse(self.url)
 
     # send RSS updates
-    @tasks.loop(minutes=1)
+    @tasks.loop(minutes=30)
     async def rssSendMessage(self):
         await self.client.wait_until_ready()
         channel = self.client.get_channel(rss_channel)
-        if debug: await channel.send("Checking for RSS")
+        if debug:
+            await channel.send("Checking for RSS")
         feed = feedparser.parse(self.url)
-
-        if self.first_run:
-            return
 
         for entry in feed.entries:
             if entry not in self.old_feed.entries:
                 message = f'Title: {entry.title}\nPublication Date: {entry.published}\nSummary: {entry.summary}\nLink: {entry.link}'
-                await channel.send(message)
+                await channel.send(content=message)
         self.old_feed = feed
-
-        if self.first_run:
-            self.first_run = False

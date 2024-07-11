@@ -26,7 +26,7 @@ class Commands:
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")
         async def ping(interaction: discord.Interaction):
-            await interaction.response.send_message(f'Pong: {round(self.client.latency, 3)}ms', ephemeral=True)
+            await interaction.response.send_message(f'Pong: {round(self.client.latency, 5)}ms', ephemeral=True)
 
         @self.tree.command(name="uptime", description="Uptime of BlueBot")
         async def uptime(interaction: discord.Interaction):
