@@ -6,12 +6,12 @@ from pytz import utc
 from variables.variables import SERVER, hardware_exchange_program_gsheetid
 from variables.channels import hardware_exchange_program_channel
 from utils.user import get_user_by_name
-from utils.get_channel_by_name import get_channel_by_name
+from utils.isOfficer import isOfficer
+from utils.log import log
 
 sheet_name = "Responses"
 gsheet_url = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(
     hardware_exchange_program_gsheetid, sheet_name)
-# print(gsheet_url)
 
 
 class HardwareExchangeProgram:
@@ -74,3 +74,12 @@ class HardwareExchangeProgram:
                         await forum.send("This hardware exchange has been fullfilled.")
                         await forum.edit(applied_tags=[channel._available_tags[tag_id]], archived=True)
                         return
+                    elif isOfficer(interaction=interaction):
+                        await interaction.response.send_message("Done", ephemeral=True)
+                        await forum.send("This hardware exchange has been ended by an officer.")
+                        await forum.edit(applied_tags=[channel._available_tags[tag_id]], archived=True)
+                        log(client=self.client,
+                            content=f'<@{interaction.user.id}> has ended the hardware exchange <#{forum.id}>.')
+                        return
+
+            await interaction.response.send_message("You are not the owner of this post in the hardware exchange program", ephemeral=True)
