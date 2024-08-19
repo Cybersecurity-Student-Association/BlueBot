@@ -14,9 +14,9 @@ class RSS:
     def __init__(self, client: discord.Client):
         self.client = client
         self.url = URL
-        self.rssSendMessage.start()
-
         self.old_feed = feedparser.parse(self.url)
+
+        self.rssSendMessage.start()
 
     # send RSS updates
     @tasks.loop(minutes=30)
@@ -28,7 +28,12 @@ class RSS:
         feed = feedparser.parse(self.url)
 
         for entry in feed.entries:
-            if entry not in self.old_feed.entries:
-                message = f'Title: {entry.title}\nPublication Date: {entry.published}\nSummary: {entry.summary}\nLink: {entry.link}'
+            is_entry_found = False
+            for old_entry in self.old_feed.entries:
+                if entry.link == old_entry.link:
+                    is_entry_found = True
+                    break
+            if not is_entry_found:
+                message = f'# {entry.title}\n{entry.summary}\n{entry.link}'
                 await channel.send(content=message)
         self.old_feed = feed
