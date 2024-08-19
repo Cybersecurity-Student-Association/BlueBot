@@ -49,6 +49,8 @@ class EventThreads:
             # message = await channel.send(event.name + " (scheduled)")
             thread = await channel.create_thread(name=event.name + " (scheduled)", invitable=False)
             await thread.add_user(event.creator)
+            epoch = str(event.start_time.timestamp()).split(".")[0]
+            await thread.send(content=f"{event.name} is starting on <t:{epoch}>")
 
         @self.client.event
         async def on_scheduled_event_update(event_before: discord.ScheduledEvent, event_after: discord.ScheduledEvent):
@@ -61,23 +63,30 @@ class EventThreads:
                         # message = await channel.fetch_message(thread.id)
                         # await message.edit(content=event_after.name + " (" + thread.name.split("(")[-1])
                         return
-            elif event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended:
+            elif event_before.status == discord.EventStatus.active and (event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended):
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_before.name + " (finished)", archived=True, locked=True)
                         await thread.send(f"{event_after.name} is over.")
                         return
-            elif event_after.status == discord.EventStatus.active:
+            elif event_before.status == discord.EventStatus.scheduled and event_after.status == discord.EventStatus.active:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (right now)")
                         await thread.send(f"@everyone {event_after.name} has started.")
                         return
-            elif event_after.status == discord.EventStatus.scheduled:
+            elif event_before.status == discord.EventStatus.active and event_after.status == discord.EventStatus.scheduled:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (scheduled)")
-                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again.")
+                        epoch = str(event_after.start_time.timestamp()).split(".")[0]
+                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again on <t:{epoch}>")
+                        return
+            elif event_before.start_time != event_after.start_time:
+                for thread in threads:
+                    if event_before.name in thread.name:
+                        epoch = str(event_after.start_time.timestamp()).split(".")[0]
+                        await thread.send(content=f'{event_before.name} will start at <t:{epoch}>')
                         return
 
         @self.client.event
@@ -136,25 +145,30 @@ class EventThreads:
             if timedelta(days=1) <= time_difference and time_difference < timedelta(days=1, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
-                        await thread.send(f'@everyone {event.name} is starting **TOMORROW**! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        epoch = str(event.start_time.timestamp()).split(".")[0]
+                        await thread.send(f'@everyone {event.name} is starting **TOMORROW** (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=3) <= time_difference and time_difference < timedelta(days=3, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
-                        await thread.send(f'@everyone {event.name} is starting in **3 days**! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        epoch = str(event.start_time.timestamp()).split(".")[0]
+                        await thread.send(f'@everyone {event.name} is starting in **3 days** (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=7) <= time_difference and time_difference < timedelta(days=7, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
-                        await thread.send(f'@everyone {event.name} is starting in 7 days! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        epoch = str(event.start_time.timestamp()).split(".")[0]
+                        await thread.send(f'@everyone {event.name} is starting in 7 days (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=14) <= time_difference and time_difference < timedelta(days=14, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
-                        await thread.send(f'@everyone {event.name} is starting in two weeks! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        epoch = str(event.start_time.timestamp()).split(".")[0]
+                        await thread.send(f'@everyone {event.name} is starting in two weeks (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=28) <= time_difference and time_difference < timedelta(days=28, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
-                        await thread.send(f'@everyone {event.name} is starting in four weeks! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        epoch = str(event.start_time.timestamp()).split(".")[0]
+                        await thread.send(f'@everyone {event.name} is starting in four weeks (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
