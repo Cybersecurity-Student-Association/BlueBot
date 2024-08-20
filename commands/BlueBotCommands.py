@@ -4,6 +4,7 @@ from utils.isOfficer import isOfficer
 from utils.log import log
 from utils.get_channel_by_name import get_channel_by_name
 from variables.channels import *
+from variables.variables import SERVER
 
 
 class BlueBotCommands:
@@ -56,7 +57,6 @@ class BlueBotCommands:
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
-            # target_channel_name = channel.name
             try:
                 target_channel_id = int(target_channel)
             except TypeError:
@@ -97,7 +97,7 @@ class BlueBotCommands:
             await interaction.channel.purge(limit=count)
             await log(client=self.client, content=f"<@{interaction.user.id}> purged all messages in <#{interaction.channel.id}>")
 
-        @self.tree.context_menu(name="Send to #rules")
+        @self.tree.context_menu(name="Send to #rules", guild=discord.Object(id=SERVER))
         async def send_to_rules(interaction: discord.Interaction, message: discord.Message):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -107,7 +107,7 @@ class BlueBotCommands:
             await interaction.response.send_message("Done", ephemeral=True)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
 
-        @self.tree.context_menu(name="Send to #club-information")
+        @self.tree.context_menu(name="Send to #club-information", guild=discord.Object(id=SERVER))
         async def send_to_club_information(interaction: discord.Interaction, message: discord.Message):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -117,7 +117,7 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
             await interaction.response.send_message("Done", ephemeral=True)
 
-        @self.tree.context_menu(name="Send to #resources")
+        @self.tree.context_menu(name="Send to #resources", guild=discord.Object(id=SERVER))
         async def send_to_resources(interaction: discord.Interaction, message: discord.Message):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -127,7 +127,7 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
             await interaction.response.send_message("Done", ephemeral=True)
 
-        @self.tree.context_menu(name="Send to #stuff-to-check-out")
+        @self.tree.context_menu(name="Send to #stuff-to-check-out", guild=discord.Object(id=SERVER))
         async def send_to_stuff_to_check_out(interaction: discord.Interaction, message: discord.Message):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
