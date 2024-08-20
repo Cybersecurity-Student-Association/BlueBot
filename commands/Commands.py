@@ -3,9 +3,7 @@ import time
 import discord
 
 from commands.BlueBotCommands import BlueBotCommands
-from commands.ContextMenu import ContextMenu
 from commands.HashingCommands import HashingCommands
-from commands.SubCommand import SubCommand
 from commands.EmbedCommands import EmbedCommands
 
 
@@ -18,10 +16,8 @@ class Commands:
 
         self.register_Commands()
         HashingCommands(client=client, tree=tree)
-        ContextMenu(client=client, tree=tree)
         BlueBotCommands(client=client, tree=tree)
         EmbedCommands(client=client, tree=tree)
-        SubCommand(client=client, tree=tree)
 
     def register_Commands(self):
         @self.tree.command(name="ping", description="Gives latency between you and the bot")
