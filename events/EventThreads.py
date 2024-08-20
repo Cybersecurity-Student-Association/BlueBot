@@ -60,8 +60,6 @@ class EventThreads:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (" + thread.name.split("(")[-1])
-                        # message = await channel.fetch_message(thread.id)
-                        # await message.edit(content=event_after.name + " (" + thread.name.split("(")[-1])
                         return
             elif event_before.status == discord.EventStatus.active and (event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended):
                 for thread in threads:

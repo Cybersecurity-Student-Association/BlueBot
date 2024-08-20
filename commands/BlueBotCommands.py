@@ -24,8 +24,8 @@ class BlueBotCommands:
 
     def register_BlueBotCommands(self):
         @self.tree.command(name="send-embed", description="Send an embed in a channel")
-        @discord.app_commands.choices(embed_name=self.valid_embeds)
-        async def send_embed(interaction: discord.Interaction, target_channel: str, embed_name: discord.app_commands.Choice[int]):
+        @discord.app_commands.choices(embed=self.valid_embeds)
+        async def send_embed(interaction: discord.Interaction, channel: str, embed: discord.app_commands.Choice[int]):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
@@ -35,25 +35,25 @@ class BlueBotCommands:
                 target_channel_id = int(get_channel_by_name(
                     client=self.client, target_name=target_channel).id)
 
-            if embed_name.name == "clubinfo":
+            if embed.name == "clubinfo":
                 await self.client.get_channel().send(embed=clubinfo.clubinfo)
                 await interaction.response.send_message("Done", ephemeral=True)
-                await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed_name} embed in <#{target_channel_id}>.")
+                await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed.name} embed in <#{target_channel_id}>.")
                 return
-            elif embed_name.name == "roles":
+            elif embed.name == "roles":
                 await self.client.get_channel(target_channel_id).send(embed=roles.roles)
                 await interaction.response.send_message("Done", ephemeral=True)
-                await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed_name} embed in <#{target_channel_id}>.")
+                await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed.name} embed in <#{target_channel_id}>.")
                 return
-            elif embed_name.name == "rules":
+            elif embed.name == "rules":
                 await self.client.get_channel(target_channel_id).send(embed=rules.rules)
                 await interaction.response.send_message("Done", ephemeral=True)
-                await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed_name} embed in <#{target_channel_id}>.")
+                await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed.name} embed in <#{target_channel_id}>.")
                 return
             await interaction.response.send_message("Not a valid embed", ephemeral=True)
 
         @self.tree.command(name="send", description="Send a message on behalf of BlueBot")
-        async def send(interaction: discord.Interaction, target_channel: str, target_message_id: str):
+        async def send(interaction: discord.Interaction, channel: str, target_message_id: str):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
@@ -68,17 +68,12 @@ class BlueBotCommands:
             await interaction.response.send_message("Done", ephemeral=True)
 
         @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another")
-        async def edit(interaction: discord.Interaction, target_channel: str, original_message_id: str, new_message_id: str):
+        async def edit(interaction: discord.Interaction, channel: str, original_message_id: str, new_message_id: str):
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             try:
-                target_channel_id = int(target_channel)
-            except TypeError:
-                target_channel_id = int(get_channel_by_name(
-                    client=self.client, target_name=target_channel).id)
-
-            old_message = await self.client.get_channel(target_channel_id).fetch_message(int(original_message_id))
+                target_channel_id = int(channel)
             if old_message.author.name != self.client.user:
                 await interaction.response.send_message(content=f"The author of the target message is not {self.client.user}!", ephemeral=True)
                 return
