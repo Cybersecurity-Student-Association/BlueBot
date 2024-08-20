@@ -48,15 +48,17 @@ class EventThreads:
             channel = self.client.get_channel(event_threads_channel)
             # message = await channel.send(event.name + " (scheduled)")
             thread = await channel.create_thread(name=event.name + " (scheduled)", invitable=False)
-            await thread.add_user(event.creator)
+            #await thread.add_user(event.creator)
             epoch = str(event.start_time.timestamp()).split(".")[0]
-            await thread.send(content=f"{event.name} is starting on <t:{epoch}>")
+            if event.description == "":
+                await thread.send(content=f"{event.name} is starting on <t:{epoch}>", file=event.cover_image)
+            else:
+                await thread.send(content=f"{event.name} is starting on <t:{epoch}>\nDescription: {event.description}", file=event.cover_image)
 
         @self.client.event
         async def on_scheduled_event_update(event_before: discord.ScheduledEvent, event_after: discord.ScheduledEvent):
             if debug >= 1:
                 print(f'{event_before.name} updated')
-                print(event_after.status)
             channel = self.client.get_channel(event_threads_channel)
             threads = channel.threads
             if event_before.name != event_after.name:
