@@ -63,6 +63,8 @@ async def presence():
         discord.Activity(type=discord.ActivityType.watching,
                          name='David Bombal', url="https://www.youtube.com/@davidbombal"),
         discord.Activity(type=discord.ActivityType.watching,
+                         name='IppSec', url="https://www.youtube.com/channel/UCa6eh7gCkpPo5XXUDfygQQA"),
+        discord.Activity(type=discord.ActivityType.watching,
                          name='Dion Training', url="https://www.youtube.com/@DionTraining/"),
         discord.Activity(type=discord.ActivityType.watching,
                          name='Hak5', url="https://www.youtube.com/@hak5"),
