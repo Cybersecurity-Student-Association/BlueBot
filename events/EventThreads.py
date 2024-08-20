@@ -144,29 +144,29 @@ class EventThreads:
                 for thread in threads:
                     if event.name in thread.name:
                         epoch = str(event.start_time.timestamp()).split(".")[0]
-                        await thread.send(f'@everyone {event.name} is starting **TOMORROW** (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        await thread.send(f'@everyone {event.name} is starting **TOMORROW** (<t:{epoch}>)! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=3) <= time_difference and time_difference < timedelta(days=3, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
                         epoch = str(event.start_time.timestamp()).split(".")[0]
-                        await thread.send(f'@everyone {event.name} is starting in **3 days** (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        await thread.send(f'@everyone {event.name} is starting in **3 days** (<t:{epoch}>)! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=7) <= time_difference and time_difference < timedelta(days=7, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
                         epoch = str(event.start_time.timestamp()).split(".")[0]
-                        await thread.send(f'@everyone {event.name} is starting in 7 days (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        await thread.send(f'@everyone {event.name} is starting in 7 days (<t:{epoch}>)! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=14) <= time_difference and time_difference < timedelta(days=14, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
                         epoch = str(event.start_time.timestamp()).split(".")[0]
-                        await thread.send(f'@everyone {event.name} is starting in two weeks (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        await thread.send(f'@everyone {event.name} is starting in two weeks (<t:{epoch}>)! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
             elif timedelta(days=28) <= time_difference and time_difference < timedelta(days=28, hours=1):
                 for thread in threads:
                     if event.name in thread.name:
                         epoch = str(event.start_time.timestamp()).split(".")[0]
-                        await thread.send(f'@everyone {event.name} is starting in four weeks (<t:{epoch})! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
+                        await thread.send(f'@everyone {event.name} is starting in four weeks (<t:{epoch}>)! If you do not wish to be part of this event, go to the "Events" in the top left and click "Interested." Thank you.')
                         break
