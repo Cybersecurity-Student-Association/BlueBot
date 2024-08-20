@@ -136,3 +136,13 @@ class BlueBotCommands:
             await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
             await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
             await interaction.response.send_message("Done", ephemeral=True)
+
+        @self.tree.context_menu(name="Send to #announcements", guild=discord.Object(id=SERVER))
+        async def send_to_announcements(interaction: discord.Interaction, message: discord.Message):
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            target_channel_id = announcements_channel
+            await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.everyone", "@everyone").replace("@.here", "@here"))
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} in <#{target_channel_id}>.")
+            await interaction.response.send_message("Done", ephemeral=True)
