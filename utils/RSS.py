@@ -23,7 +23,7 @@ class RSS:
     async def rssSendMessage(self):
         await self.client.wait_until_ready()
         channel = self.client.get_channel(rss_channel)
-        if debug:
+        if debug >= 2:
             await channel.send("Checking for RSS")
         feed = feedparser.parse(self.url)
 

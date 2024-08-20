@@ -41,7 +41,7 @@ async def on_ready():
 
     print(f'{client.user} is ready and listening')
     RSS(client=client)
-    if debug:
+    if debug >= 2:
         await log(client=client, content=f'{client.user} is ready and listening')
 
 
