@@ -77,7 +77,7 @@ class BlueBotCommands:
                     await interaction.response.send_message(content="Invalid message ID!", ephemeral=True)
                     return
             new_message = await self.client.get_channel(target_channel_id).send(content=target_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{target_message_id} at https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{new_message.id}.")
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {target_message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
         @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another")
@@ -112,7 +112,7 @@ class BlueBotCommands:
                     return
             
             await old_message.edit(content=new_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{original_message_id} with https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{new_message_id}")
+            await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's {old_message.jump_url} with {new_message.jump_url}")
             await interaction.response.send_message("Done", ephemeral=True)
             return
 
@@ -131,9 +131,9 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = rules_channel
-            await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            new_message = await interaction.response.send_message("Done", ephemeral=True)
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} at https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{new_message.id}.")
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            await interaction.response.send_message("Done", ephemeral=True)
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
 
         @self.tree.context_menu(name="Send to #club-information", guild=discord.Object(id=SERVER))
         async def send_to_club_information(interaction: discord.Interaction, message: discord.Message):
@@ -142,7 +142,7 @@ class BlueBotCommands:
                 return
             target_channel_id = club_information_channel
             new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} at https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{new_message.id}.")
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
         @self.tree.context_menu(name="Send to #resources", guild=discord.Object(id=SERVER))
@@ -152,7 +152,7 @@ class BlueBotCommands:
                 return
             target_channel_id = resources_channel
             new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} at https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{new_message.id}.")
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
         @self.tree.context_menu(name="Send to #stuff-to-check-out", guild=discord.Object(id=SERVER))
@@ -162,7 +162,7 @@ class BlueBotCommands:
                 return
             target_channel_id = stuff_to_check_out_channel
             new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} at https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{new_message.id}.")
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
         @self.tree.context_menu(name="Send to #announcements", guild=discord.Object(id=SERVER))
@@ -172,5 +172,5 @@ class BlueBotCommands:
                 return
             target_channel_id = announcements_channel
             new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent https://discord.com/channels/{interaction.guild_id}/{interaction.channel_id}/{message.id} at https://discord.com/channels/{interaction.guild_id}/{target_channel_id}/{new_message.id}.")
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
