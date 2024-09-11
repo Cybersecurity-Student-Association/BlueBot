@@ -15,6 +15,8 @@ class EventThreads:
     def register_EventThreads(self):
         @self.client.event
         async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
+            if payload.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{payload.user_id} added a reaction')
             return  # cant add users to the event "interested". If they react, then they will not be interested in the event
@@ -29,6 +31,8 @@ class EventThreads:
 
         @self.client.event
         async def on_raw_reaction_remove(payload: discord.RawReactionActionEvent):
+            if payload.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{payload.user_id} removed a reaction')
             return  # cant remove users from the event "interested". If they unreact, then they will still be interested in the event
@@ -42,13 +46,15 @@ class EventThreads:
 
         @self.client.event
         async def on_scheduled_event_create(event: discord.ScheduledEvent):
+            if event.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{event.name} created')
 
             channel = self.client.get_channel(event_threads_channel)
             # message = await channel.send(event.name + " (scheduled)")
             thread = await channel.create_thread(name=event.name + " (scheduled)", invitable=False)
-            #await thread.add_user(event.creator)
+            await thread.add_user(event.creator)
             epoch = str(event.start_time.timestamp()).split(".")[0]
             if event.description == "":
                 await thread.send(content=f"{event.name} is starting on <t:{epoch}>", file=event.cover_image)
@@ -57,6 +63,8 @@ class EventThreads:
 
         @self.client.event
         async def on_scheduled_event_update(event_before: discord.ScheduledEvent, event_after: discord.ScheduledEvent):
+            if event_before.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{event_before.name} updated')
             channel = self.client.get_channel(event_threads_channel)
@@ -94,6 +102,8 @@ class EventThreads:
 
         @self.client.event
         async def on_scheduled_event_delete(event: discord.ScheduledEvent):
+            if event.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{event.name} deleted')
             channel = self.client.get_channel(event_threads_channel)
@@ -108,6 +118,8 @@ class EventThreads:
 
         @self.client.event
         async def on_scheduled_event_user_add(event: discord.ScheduledEvent, username: str):
+            if event.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{username} joined {event.name}')
             threads = self.client.get_channel(event_threads_channel).threads
@@ -118,6 +130,8 @@ class EventThreads:
 
         @self.client.event
         async def on_scheduled_event_user_remove(event: discord.ScheduledEvent, username: str):
+            if event.guild_id != SERVER:
+                return
             if debug >= 1:
                 print(f'{username} left {event.name}')
             threads = self.client.get_channel(event_threads_channel).threads
@@ -128,6 +142,8 @@ class EventThreads:
 
         @self.client.event
         async def on_raw_thread_member_remove(thread: discord.RawThreadMembersUpdate):
+            if thread.guild_id != SERVER:
+                return
             removed_member_id = int(thread.data["removed_member_ids"][0])
             event_thread = self.client.get_guild(SERVER).get_channel(
                 event_threads_channel).get_thread(thread.thread_id)

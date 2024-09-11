@@ -27,6 +27,8 @@ class Events:
 
         @self.client.event
         async def on_member_join(member: discord.Member):
+            if member.guild.id != SERVER:
+                return
             channel = self.client.get_guild(
                 int(SERVER)).get_channel(int(welcome_channel))
             await channel.send(file=discord.File("assets/CS2A.png"),

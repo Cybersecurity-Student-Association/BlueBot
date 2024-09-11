@@ -2,7 +2,7 @@ import feedparser
 from datetime import datetime, timedelta
 from discord.ext import tasks
 import discord
-from variables.variables import debug
+from variables.variables import debug, SERVER
 from variables.channels import rss_channel
 
 URL = "https://feeds.feedburner.com/TheHackersNews"
@@ -22,7 +22,7 @@ class RSS:
     @tasks.loop(minutes=30)
     async def rssSendMessage(self):
         await self.client.wait_until_ready()
-        channel = self.client.get_channel(rss_channel)
+        channel = self.client.get_guild(SERVER).get_channel(rss_channel)
         if debug >= 2:
             await channel.send("Checking for RSS")
         feed = feedparser.parse(self.url)

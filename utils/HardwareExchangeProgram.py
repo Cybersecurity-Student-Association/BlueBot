@@ -54,6 +54,8 @@ class HardwareExchangeProgram:
     def register_commands(self):
         @self.tree.command(name="done", description="End this thread in the hardware exchange program")
         async def done(interaction: discord.Interaction):
+            if interaction.guild_id != SERVER:
+                return
             isFound = False
             channel = self.client.get_guild(SERVER).get_channel(
                 hardware_exchange_program_channel)

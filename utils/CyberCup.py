@@ -1,6 +1,6 @@
 import discord
 import pandas as pd
-from variables.variables import cyber_cup_gsheetid
+from variables.variables import cyber_cup_gsheetid, SERVER
 
 sheet_name = "Leaderboard"
 gsheet_url = f"https://docs.google.com/spreadsheets/d/{cyber_cup_gsheetid}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
@@ -14,6 +14,8 @@ class CyberCup:
     def register_commands(self):
         @self.tree.command(name="cyber-cup", description="View your rank in the Cyber Cup")
         async def cyber_cup(interaction: discord.Interaction):
+            if interaction.guild_id != SERVER:
+                return
             df = pd.read_csv(gsheet_url)
             final_send_string = ""
             for row in range(0, len(df["Name"])):
