@@ -158,7 +158,7 @@ class EventThreads:
     @tasks.loop(hours=1)
     async def send_reminder_message(self):
         events = await self.client.get_guild(SERVER).fetch_scheduled_events()
-        threads = self.client.get_channel(event_threads_channel).threads
+        threads = self.client.get_guild(SERVER).get_channel(event_threads_channel).threads
         for event in events:
             time_difference = event.start_time - datetime.now().astimezone(tz=utc)
             if timedelta(days=1) <= time_difference and time_difference < timedelta(days=1, hours=1):
