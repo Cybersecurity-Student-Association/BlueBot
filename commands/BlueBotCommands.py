@@ -93,16 +93,19 @@ class BlueBotCommands:
                 return
             try:
                 target_channel_id = int(channel)
+                target_channel = self.client.get_guild(SERVER).get_channel(target_channel_id)
             except ValueError:
                 target_channel_id = get_channel_by_name(
                     client=self.client, target_name=channel)
                 if target_channel_id == None:
                     await interaction.response.send_message(content="Invalid channel name!", ephemeral=True)
                     return
-                target_channel_id = int(target_channel_id.id)
+                target_channel = int(target_channel_id)
+            except discord.errors.NotFound:
+                await interaction.response.send_message(content="Invalid channel ID", ephemeral=True)
                 
             try:
-                old_message = await self.client.get_guild(int(interaction.guild_id)).get_channel(int(interaction.channel_id)).fetch_message(int(original_message_id))
+                old_message = await self.client.get_guild(SERVER).get_channel(target_channel_id).fetch_message(int(original_message_id))
             except discord.errors.NotFound:
                     await interaction.response.send_message(content="Invalid original message ID!", ephemeral=True)
                     return
@@ -112,7 +115,7 @@ class BlueBotCommands:
                 return
             
             try:
-                new_message = await self.client.get_channel(interaction.channel_id).fetch_message(int(new_message_id))
+                new_message = await self.client.get_guild(SERVER).get_channel(interaction.channel_id).fetch_message(int(new_message_id))
             except discord.errors.NotFound:
                     await interaction.response.send_message(content="Invalid new message ID!", ephemeral=True)
                     return
