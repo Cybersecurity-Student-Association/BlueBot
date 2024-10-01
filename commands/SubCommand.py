@@ -20,4 +20,4 @@ class SubCommand:
             Choice(name='honeydew', value=7),
         ])
         async def fruits(interaction: discord.Interaction, fruits: Choice[int]):
-            await interaction.response.send_message(f'Your favourite fruit is {fruits.name}.', ephemeral=True)
+            await interaction.response.send_message(f'Your favorite fruit is {fruits.name}.', ephemeral=True)
