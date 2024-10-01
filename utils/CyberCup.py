@@ -15,6 +15,7 @@ class CyberCup:
         @self.tree.command(name="cyber-cup", description="View your rank in the Cyber Cup")
         async def cyber_cup(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             df = pd.read_csv(gsheet_url)
             final_send_string = ""
@@ -44,5 +45,5 @@ class CyberCup:
             if final_send_string == "":
                 final_send_string = "You have not submitted any points to the Cyber Cup."
 
-            final_send_string += f"\nLink to Google Sheet: https://docs.google.com/spreadsheets/d/{cyber_cup_gsheetid}/edit?gid=2007585714#gid=2007585714"
+            final_send_string += f"\nLink to Google Sheet: https://docs.google.com/spreadsheets/d/{cyber_cup_gsheetid}"
             await interaction.response.send_message(content=final_send_string, ephemeral=True, suppress_embeds=True)

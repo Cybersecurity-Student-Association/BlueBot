@@ -27,6 +27,7 @@ class BlueBotCommands:
         @discord.app_commands.choices(embed=self.valid_embeds)
         async def send_embed(interaction: discord.Interaction, target_channel: str, embed: discord.app_commands.Choice[int]):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -56,6 +57,7 @@ class BlueBotCommands:
         @self.tree.command(name="send", description="Send a message on behalf of BlueBot")
         async def send(interaction: discord.Interaction, target_channel: str, target_message_id: str):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -80,6 +82,7 @@ class BlueBotCommands:
         @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another")
         async def edit(interaction: discord.Interaction, target_channel: str, original_message_id: str, new_message_id: str):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -114,6 +117,7 @@ class BlueBotCommands:
         @self.tree.command(name="purge", description="Delete an X amount of messages in a channel")
         async def purge(interaction: discord.Interaction, count: int):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -124,6 +128,9 @@ class BlueBotCommands:
 
         @self.tree.context_menu(name="Send to #rules", guild=discord.Object(id=SERVER))
         async def send_to_rules(interaction: discord.Interaction, message: discord.Message):
+            if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
+                return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
@@ -135,6 +142,7 @@ class BlueBotCommands:
         @self.tree.context_menu(name="Send to #club-information", guild=discord.Object(id=SERVER))
         async def send_to_club_information(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -147,6 +155,7 @@ class BlueBotCommands:
         @self.tree.context_menu(name="Send to #resources", guild=discord.Object(id=SERVER))
         async def send_to_resources(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -159,6 +168,7 @@ class BlueBotCommands:
         @self.tree.context_menu(name="Send to #stuff-to-check-out", guild=discord.Object(id=SERVER))
         async def send_to_stuff_to_check_out(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
@@ -171,6 +181,7 @@ class BlueBotCommands:
         @self.tree.context_menu(name="Send to #announcements", guild=discord.Object(id=SERVER))
         async def send_to_announcements(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
+                interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             if not isOfficer(interaction=interaction):
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
