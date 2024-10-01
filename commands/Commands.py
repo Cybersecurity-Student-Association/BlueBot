@@ -22,14 +22,14 @@ class Commands:
         EmbedCommands(client=client, tree=tree)
 
     def register_Commands(self):
-        @self.tree.command(name="ping", description="Gives latency between you and the bot")
+        @self.tree.command(name="ping", description="Gives latency between you and the bot", guilds=[discord.Object(id=SERVER)])
         async def ping(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             await interaction.response.send_message(f'Pong: {round(self.client.latency, 5)}ms', ephemeral=True)
 
-        @self.tree.command(name="uptime", description="Uptime of BlueBot")
+        @self.tree.command(name="uptime", description="Uptime of BlueBot", guilds=[discord.Object(id=SERVER)])
         async def uptime(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")

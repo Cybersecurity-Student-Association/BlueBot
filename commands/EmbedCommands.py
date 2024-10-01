@@ -10,21 +10,21 @@ class EmbedCommands:
         self.register_EmbedCommands()
 
     def register_EmbedCommands(self):
-        @self.tree.command(name="clubinfo", description="Posts information about the club")
+        @self.tree.command(name="clubinfo", description="Posts information about the club", guilds=[discord.Object(id=SERVER)])
         async def clubinfo(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             await interaction.response.send_message(embed=embed_clubinfo.clubinfo, ephemeral=True)
 
-        @self.tree.command(name="rules", description="Posts the rules")
+        @self.tree.command(name="rules", description="Posts the rules", guilds=[discord.Object(id=SERVER)])
         async def rules(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             await interaction.response.send_message(embed=embed_rules.rules, ephemeral=True)
 
-        @self.tree.command(name="roles", description="Posts the roles and their descriptions")
+        @self.tree.command(name="roles", description="Posts the roles and their descriptions", guilds=[discord.Object(id=SERVER)])
         async def roles(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")

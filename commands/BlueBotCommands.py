@@ -23,7 +23,7 @@ class BlueBotCommands:
         self.register_BlueBotCommands()
 
     def register_BlueBotCommands(self):
-        @self.tree.command(name="send-embed", description="Send an embed in a channel")
+        @self.tree.command(name="send-embed", description="Send an embed in a channel", guilds=[discord.Object(id=SERVER)])
         @discord.app_commands.choices(embed=self.valid_embeds)
         async def send_embed(interaction: discord.Interaction, target_channel: str, embed: discord.app_commands.Choice[int]):
             if interaction.guild_id != SERVER:
@@ -54,7 +54,7 @@ class BlueBotCommands:
                 return
             await interaction.response.send_message("Not a valid embed", ephemeral=True)
 
-        @self.tree.command(name="send", description="Send a message on behalf of BlueBot")
+        @self.tree.command(name="send", description="Send a message on behalf of BlueBot", guilds=[discord.Object(id=SERVER)])
         async def send(interaction: discord.Interaction, target_channel: str, target_message_id: str):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -79,7 +79,7 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {target_message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
-        @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another")
+        @self.tree.command(name="edit", description="Replace one of BlueBot's messages with another", guilds=[discord.Object(id=SERVER)])
         async def edit(interaction: discord.Interaction, target_channel: str, original_message_id: str, new_message_id: str):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -114,7 +114,7 @@ class BlueBotCommands:
             await interaction.response.send_message("Done", ephemeral=True)
             return
 
-        @self.tree.command(name="purge", description="Delete an X amount of messages in a channel")
+        @self.tree.command(name="purge", description="Delete an X amount of messages in a channel", guilds=[discord.Object(id=SERVER)])
         async def purge(interaction: discord.Interaction, count: int):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -126,7 +126,7 @@ class BlueBotCommands:
             await interaction.channel.purge(limit=count)
             await log(client=self.client, content=f"<@{interaction.user.id}> purged all messages in <#{interaction.channel.id}>")
 
-        @self.tree.context_menu(name="Send to #rules", guild=discord.Object(id=SERVER))
+        @self.tree.context_menu(name="Send to #rules", guilds=[discord.Object(id=SERVER)])
         async def send_to_rules(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -139,7 +139,7 @@ class BlueBotCommands:
             await interaction.response.send_message("Done", ephemeral=True)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
 
-        @self.tree.context_menu(name="Send to #club-information", guild=discord.Object(id=SERVER))
+        @self.tree.context_menu(name="Send to #club-information", guilds=[discord.Object(id=SERVER)])
         async def send_to_club_information(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -152,7 +152,7 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
-        @self.tree.context_menu(name="Send to #resources", guild=discord.Object(id=SERVER))
+        @self.tree.context_menu(name="Send to #resources", guilds=[discord.Object(id=SERVER)])
         async def send_to_resources(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -165,7 +165,7 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
-        @self.tree.context_menu(name="Send to #stuff-to-check-out", guild=discord.Object(id=SERVER))
+        @self.tree.context_menu(name="Send to #stuff-to-check-out", guilds=[discord.Object(id=SERVER)])
         async def send_to_stuff_to_check_out(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
@@ -178,7 +178,7 @@ class BlueBotCommands:
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
-        @self.tree.context_menu(name="Send to #announcements", guild=discord.Object(id=SERVER))
+        @self.tree.context_menu(name="Send to #announcements", guilds=[discord.Object(id=SERVER)])
         async def send_to_announcements(interaction: discord.Interaction, message: discord.Message):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
