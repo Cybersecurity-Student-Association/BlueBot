@@ -47,7 +47,7 @@ class HardwareExchangeProgram:
                     if channel._available_tags[tag_id].name == "open":
                         forum = await channel.create_thread(name=product, content=first_message, applied_tags=[channel._available_tags[tag_id]], suppress_embeds=True)
                         user = get_user_by_name(
-                            client=self.client, username=df["Enter your Discord (no nicknames or @)"][row])
+                            client=self.client, username=df["Enter your Discord username exactly as it appears in Discord (no nicknames or including the \"@\")"][row])
                         await forum.thread.send(content=f'<@{user.id}>')
                         break
 
@@ -80,7 +80,7 @@ class HardwareExchangeProgram:
                         await interaction.response.send_message("Done", ephemeral=True)
                         await forum.send("This hardware exchange has been ended by an officer.")
                         await forum.edit(applied_tags=[channel._available_tags[tag_id]], archived=True)
-                        log(client=self.client,
+                        await log(client=self.client,
                             content=f'<@{interaction.user.id}> has ended the hardware exchange <#{forum.id}>.')
                         return
 

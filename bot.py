@@ -30,7 +30,6 @@ async def on_ready():
     Events(client=client)
 
     CyberCup(client=client, tree=tree)
-    HardwareExchangeProgram(client=client, tree=tree)
     await client.wait_until_ready()
 
     await tree.sync(guild=discord.Object(id=SERVER))
