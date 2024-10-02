@@ -6,7 +6,7 @@ from commands.BlueBotCommands import BlueBotCommands
 from commands.HashingCommands import HashingCommands
 from commands.EmbedCommands import EmbedCommands
 
-from variables.variables import SERVER
+from variables.variables import SERVER, SERVER_OBJ
 
 
 class Commands:
@@ -22,14 +22,14 @@ class Commands:
         EmbedCommands(client=client, tree=tree)
 
     def register_Commands(self):
-        @self.tree.command(name="ping", description="Gives latency between you and the bot", guilds=[discord.Object(id=SERVER)])
+        @self.tree.command(name="ping", description="Gives latency between you and the bot", guild=SERVER_OBJ)
         async def ping(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")
                 return
             await interaction.response.send_message(f'Pong: {round(self.client.latency, 5)}ms', ephemeral=True)
 
-        @self.tree.command(name="uptime", description="Uptime of BlueBot", guilds=[discord.Object(id=SERVER)])
+        @self.tree.command(name="uptime", description="Uptime of BlueBot", guild=SERVER_OBJ)
         async def uptime(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")

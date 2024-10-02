@@ -1,9 +1,11 @@
 import os
 from dotenv import load_dotenv
+from discord import Object
 load_dotenv()
 
 TOKEN = os.environ["TOKEN"]
 SERVER = int(os.environ["GUILD_ID"])
+SERVER_OBJ = Object(id=SERVER)
 
 campusgroups_message_link = os.environ["campusgroups_message_link"]
 cs2a_logo_url = os.environ["cs2alogourl"]

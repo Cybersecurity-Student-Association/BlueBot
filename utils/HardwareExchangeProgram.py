@@ -3,7 +3,7 @@ from discord.ext import tasks
 import pandas as pd
 from datetime import datetime, timedelta
 from pytz import utc
-from variables.variables import SERVER, hardware_exchange_program_gsheetid
+from variables.variables import SERVER, SERVER_OBJ, hardware_exchange_program_gsheetid
 from variables.channels import hardware_exchange_program_channel
 from utils.user import get_user_by_name
 from utils.isOfficer import isOfficer
@@ -52,7 +52,7 @@ class HardwareExchangeProgram:
                         break
 
     def register_commands(self):
-        @self.tree.command(name="done", description="End this thread in the hardware exchange program")
+        @self.tree.command(name="done", description="End this thread in the hardware exchange program", guild=SERVER_OBJ)
         async def done(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 return

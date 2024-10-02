@@ -1,6 +1,6 @@
 import discord
 import pandas as pd
-from variables.variables import cyber_cup_gsheetid, SERVER
+from variables.variables import cyber_cup_gsheetid, SERVER, SERVER_OBJ
 
 sheet_name = "Leaderboard"
 gsheet_url = f"https://docs.google.com/spreadsheets/d/{cyber_cup_gsheetid}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
@@ -12,7 +12,7 @@ class CyberCup:
         self.register_commands()
 
     def register_commands(self):
-        @self.tree.command(name="cyber-cup", description="View your rank in the Cyber Cup")
+        @self.tree.command(name="cyber-cup", description="View your rank in the Cyber Cup", guild=SERVER_OBJ)
         async def cyber_cup(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 interaction.response.send_message(content="This bot is not intended for this server.")

@@ -33,7 +33,7 @@ async def on_ready():
     HardwareExchangeProgram(client=client, tree=tree)
     await client.wait_until_ready()
 
-    await tree.sync()
+    await tree.sync(guild=discord.Object(id=SERVER))
     await client.wait_until_ready()
 
     client.loop.create_task(presence())
