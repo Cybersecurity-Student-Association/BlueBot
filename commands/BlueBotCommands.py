@@ -23,7 +23,7 @@ class BlueBotCommands:
         self.register_BlueBotCommands()
 
     def register_BlueBotCommands(self):
-        @self.tree.command(name="send-embed", description="Send an embed in a channel", guilds=[discord.Object(id=SERVER)])
+        @self.tree.command(name="send-embed", description="Send an embed in a channel", guild=SERVER_OBJ)
         @discord.app_commands.choices(embed=self.valid_embeds)
         async def send_embed(interaction: discord.Interaction, target_channel: str, embed: discord.app_commands.Choice[int]):
             if interaction.guild_id != SERVER:
@@ -75,7 +75,7 @@ class BlueBotCommands:
             except discord.errors.NotFound:
                     await interaction.response.send_message(content="Invalid message ID!", ephemeral=True)
                     return
-            new_message = await self.client.get_channel(target_channel_id).send(content=target_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            new_message = await self.client.get_channel(target_channel_id).send(content=target_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=target_message.embeds)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {target_message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
@@ -109,7 +109,7 @@ class BlueBotCommands:
                     await interaction.response.send_message(content="Invalid new message ID!", ephemeral=True)
                     return
             
-            await old_message.edit(content=new_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            await old_message.edit(content=new_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=old_message.embeds)
             await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's {old_message.jump_url} with {new_message.jump_url}")
             await interaction.response.send_message("Done", ephemeral=True)
             return
@@ -135,7 +135,7 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = rules_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
             await interaction.response.send_message("Done", ephemeral=True)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
 
@@ -148,7 +148,7 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = club_information_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
@@ -161,7 +161,7 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = resources_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
@@ -174,7 +174,7 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = stuff_to_check_out_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
@@ -187,7 +187,7 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             target_channel_id = announcements_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all())
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
