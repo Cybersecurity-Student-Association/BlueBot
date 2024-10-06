@@ -28,7 +28,7 @@ async def on_ready():
 
     Commands(client=client, tree=tree)
     Events(client=client)
-
+    #HardwareExchangeProgram(client=client, tree=tree)
     CyberCup(client=client, tree=tree)
     await client.wait_until_ready()
 
@@ -41,7 +41,7 @@ async def on_ready():
     print(f'{client.user} is ready and listening')
     RSS(client=client)
     if debug >= 2:
-        await log(client=client, content=f'{client.user} is ready and listening')
+        await log(client=client, content=f'@silent {client.user} is ready and listening')
 
 
 async def presence():

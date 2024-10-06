@@ -38,7 +38,7 @@ class BlueBotCommands:
                 return
 
             if embed.name == "clubinfo":
-                await self.client.get_channel().send(embed=clubinfo.clubinfo)
+                await self.client.get_channel(target_channel_id).send(embed=clubinfo.clubinfo)
                 await interaction.response.send_message("Done", ephemeral=True)
                 await log(client=self.client, content=f"<@{interaction.user.id}> sent the {embed.name} embed in <#{target_channel_id}>.")
                 return
