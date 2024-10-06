@@ -6,9 +6,9 @@ import discord
 from commands.Commands import Commands
 from events.Events import Events
 from utils.CyberCup import CyberCup
-from utils.HardwareExchangeProgram import HardwareExchangeProgram
+#from utils.HardwareExchangeProgram import HardwareExchangeProgram
 from utils.RSS import RSS
-from variables.variables import SERVER, TOKEN, debug
+from variables.variables import SERVER, SERVER_OBJ, TOKEN, debug
 from utils.log import log
 
 
@@ -32,7 +32,7 @@ async def on_ready():
     CyberCup(client=client, tree=tree)
     await client.wait_until_ready()
 
-    await tree.sync(guild=discord.Object(id=SERVER))
+    await tree.sync(guild=SERVER_OBJ)
     await client.wait_until_ready()
 
     client.loop.create_task(presence())

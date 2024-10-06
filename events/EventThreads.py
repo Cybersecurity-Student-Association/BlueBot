@@ -145,9 +145,11 @@ class EventThreads:
             if thread.guild_id != SERVER:
                 return
             removed_member_id = int(thread.data["removed_member_ids"][0])
-            event_thread = self.client.get_guild(SERVER).get_channel(
-                event_threads_channel).get_thread(thread.thread_id)
+            guild = await self.client.fetch_guild(SERVER)
+            event_thread = guild.get_channel_or_thread(thread.thread_id)
             events = await self.client.get_guild(SERVER).fetch_scheduled_events()
+            if debug >= 1:
+                print(f'{removed_member_id} left {thread.thread_id}')
             for event in events:
                 if event.name in event_thread.name:
                     async for user in event.users():
