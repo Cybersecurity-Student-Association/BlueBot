@@ -6,11 +6,11 @@ from variables.channels import welcome_channel
 from events.EventThreads import EventThreads
 
 class Events:
-    def __init__(self, client: discord.Client):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
 
         self.register_events()
-        EventThreads(client=client)
+        EventThreads(client=client, tree=tree)
 
     def register_events(self):
         @self.client.event

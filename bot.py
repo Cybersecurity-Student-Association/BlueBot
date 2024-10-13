@@ -27,7 +27,7 @@ tree = discord.app_commands.CommandTree(client=client)
 async def on_ready():
 
     Commands(client=client, tree=tree)
-    Events(client=client)
+    Events(client=client, tree=tree)
     #HardwareExchangeProgram(client=client, tree=tree)
     CyberCup(client=client, tree=tree)
     await client.wait_until_ready()

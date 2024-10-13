@@ -1,13 +1,20 @@
 import discord
-from variables.variables import debug, SERVER
+from variables.variables import debug, SERVER, SERVER_OBJ
 from variables.channels import event_threads_channel
+from utils.isOfficer import isOfficer
+from utils.get_channel_by_name import get_channel_by_name
+from utils.log import log
 from discord.ext import tasks
 from datetime import datetime, timedelta
 from pytz import utc
 
+
+disabled_text = "(invites disabled)"
+
 class EventThreads:
-    def __init__(self, client: discord.Client):
+    def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
         self.client = client
+        self.tree = tree
 
         self.register_EventThreads()
         self.send_reminder_message.start()
@@ -117,45 +124,85 @@ class EventThreads:
                     return
 
         @self.client.event
-        async def on_scheduled_event_user_add(event: discord.ScheduledEvent, username: str):
+        async def on_scheduled_event_user_add(event: discord.ScheduledEvent, user: discord.User):
             if event.guild_id != SERVER:
                 return
             if debug >= 1:
-                print(f'{username} joined {event.name}')
+                print(f'{user.id} joined {event.name}')
+            if disabled_text in event.description:
+                if debug >=1:
+                    print(f'{user.id} joined event {event.name}, but thread joining for events is disabled')
+                return
+            
             threads = self.client.get_channel(event_threads_channel).threads
             for thread in threads:
                 if event.name in thread.name:
-                    await thread.add_user(username)
+                    await thread.add_user(user)
                     return
 
         @self.client.event
-        async def on_scheduled_event_user_remove(event: discord.ScheduledEvent, username: str):
+        async def on_scheduled_event_user_remove(event: discord.ScheduledEvent, user: discord.User):
             if event.guild_id != SERVER:
                 return
             if debug >= 1:
-                print(f'{username} left {event.name}')
+                print(f'{user.id} left {event.name}')
             threads = self.client.get_channel(event_threads_channel).threads
             for thread in threads:
                 if event.name in thread.name:
-                    await thread.remove_user(username)
-                    return
+                    members = await thread.fetch_members()
+                    for member in members:
+                        if member.id == user.id:
+                            await thread.remove_user(user)
+                            return
 
         @self.client.event
         async def on_raw_thread_member_remove(thread: discord.RawThreadMembersUpdate):
             if thread.guild_id != SERVER:
                 return
-            removed_member_id = int(thread.data["removed_member_ids"][0])
-            guild = await self.client.fetch_guild(SERVER)
-            event_thread = guild.get_channel_or_thread(thread.thread_id)
+            
             events = await self.client.get_guild(SERVER).fetch_scheduled_events()
+            guild = await self.client.fetch_guild(SERVER)
+            event_thread = await guild.fetch_channel(thread.thread_id)
             if debug >= 1:
-                print(f'{removed_member_id} left {thread.thread_id}')
+                log_data = thread.data["removed_member_ids"][0]
+                print(f'{log_data} left {thread.thread_id}')
             for event in events:
+                if disabled_text in event.description:
+                    if debug >= 1:
+                        print(f"skipped checking {event.name} because invites for the event are disabled.")
+                    return
+
                 if event.name in event_thread.name:
-                    async for user in event.users():
-                        if user.id == removed_member_id:
-                            await event_thread.send(content=f'<@{removed_member_id}> please remove yourself from the "Interested" in the event details to leave this channel. {event.url}')
-                            return
+                    async for user in event.users(): # users still interested in the event
+                        for removed_member_id in thread.data["removed_member_ids"]:
+                            removed_member_id = int(removed_member_id)
+                            if user.id == removed_member_id:
+                                await event_thread.send(content=f'<@{removed_member_id}> please remove yourself from the "Interested" in the event details to leave this channel. {event.url}')
+
+                        
+        @self.tree.command(name="toggle-invites", description="Disable BlueBot from adding members to an event thread", guild=SERVER_OBJ)
+        async def disable_thread_invites_for_event(interaction: discord.Interaction):
+            if interaction.guild_id != SERVER:
+                await interaction.response.send_message(content="This bot is not intended for this server.", ephemeral=True)
+                return
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message(content="Invalid permissions!", ephemeral=True)
+                return
+            events = self.client.get_guild(SERVER).scheduled_events
+            
+            for event in events:
+                if event.name in interaction.channel.name:
+                    if disabled_text in event.description:
+                        await event.edit(description=event.description[0:len(event.description) - len(disabled_text)])
+                        await interaction.response.send_message(content="Done.", ephemeral=True)
+                        await log(client=self.client, content=f"@slient <@{interaction.user.id}> enabled invites for the event {event.name}")
+                    else:
+                        await event.edit(description=event.description + disabled_text)
+                        await interaction.response.send_message(content="Done.", ephemeral=True)
+                        await log(client=self.client, content=f"@slient <@{interaction.user.id}> disabled invites for the event {event.name}")
+                    return
+            
+            
 
     @tasks.loop(hours=1)
     async def send_reminder_message(self):
