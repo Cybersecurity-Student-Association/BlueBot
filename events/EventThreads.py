@@ -195,11 +195,11 @@ class EventThreads:
                     if disabled_text in event.description:
                         await event.edit(description=event.description[0:len(event.description) - len(disabled_text)])
                         await interaction.response.send_message(content="Done.", ephemeral=True)
-                        await log(client=self.client, content=f"@slient <@{interaction.user.id}> enabled invites for the event {event.name}")
+                        await log(client=self.client, content=f"@silent <@{interaction.user.id}> enabled invites for the event {event.name}")
                     else:
                         await event.edit(description=event.description + disabled_text)
                         await interaction.response.send_message(content="Done.", ephemeral=True)
-                        await log(client=self.client, content=f"@slient <@{interaction.user.id}> disabled invites for the event {event.name}")
+                        await log(client=self.client, content=f"@silent <@{interaction.user.id}> disabled invites for the event {event.name}")
                     return
             
             
