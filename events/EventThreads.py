@@ -84,7 +84,7 @@ class EventThreads:
             elif event_before.status == discord.EventStatus.active and (event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended):
                 for thread in threads:
                     if event_before.name in thread.name:
-                        await thread.edit(name=event_before.name + " (finished)", archived=True, locked=True)
+                        await thread.edit(name=event_before.name + " (finished)", archived=True)
                         await thread.send(f"{event_after.name} is over.")
                         return
             elif event_before.status == discord.EventStatus.scheduled and event_after.status == discord.EventStatus.active:
