@@ -76,7 +76,14 @@ class BlueBotCommands:
             except discord.errors.NotFound:
                     await interaction.response.send_message(content="Invalid message ID!", ephemeral=True)
                     return
-            new_message = await self.client.get_channel(target_channel_id).send(content=target_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=target_message.embeds)
+            
+            attachments = []
+            for number in range(0, len(target_message.attachments)):
+                bufferedIOBase = io.BytesIO()
+                attatchment = await target_message.attachments[number].save(bufferedIOBase)
+                attachments.append(discord.File(fp=bufferedIOBase, filename=target_message.attachments[number].filename))
+
+            new_message = await self.client.get_channel(target_channel_id).send(content=target_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=target_message.embeds, files=attachments)
             await log(client=self.client, content=f"<@{interaction.user.id}> sent {target_message.jump_url} at {new_message.jump_url}.")
             await interaction.response.send_message("Done", ephemeral=True)
 
@@ -99,7 +106,7 @@ class BlueBotCommands:
                     await interaction.response.send_message(content="Invalid original message ID!", ephemeral=True)
                     return
             if debug >= 1:
-                print(old_message.author.name)
+                print(f'Author of old message is: {old_message.author.name}')
             if int(old_message.author.id) != int(self.client.user.id):
                 await interaction.response.send_message(content=f"The author of the target message is not {self.client.user}!", ephemeral=True)
                 return
@@ -110,7 +117,13 @@ class BlueBotCommands:
                     await interaction.response.send_message(content="Invalid new message ID!", ephemeral=True)
                     return
             
-            await old_message.edit(content=new_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=old_message.embeds)
+            attachments = []
+            for number in range(0, len(old_message.attachments)):
+                bufferedIOBase = io.BytesIO()
+                attatchment = await old_message.attachments[number].save(bufferedIOBase)
+                attachments.append(discord.File(fp=bufferedIOBase, filename=old_message.attachments[number].filename))
+
+            await old_message.edit(content=new_message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=old_message.embeds, attachments=attachments)
             await log(client=self.client, content=f"<@{interaction.user.id}> edited BlueBot's {old_message.jump_url} with {new_message.jump_url}")
             await interaction.response.send_message("Done", ephemeral=True)
             return
@@ -176,13 +189,13 @@ class BlueBotCommands:
                 await interaction.response.send_message("Invalid permissions", ephemeral=True)
                 return
             
-            attatchments = []
+            attachments = []
             for number in range(0, len(message.attachments)):
                 bufferedIOBase = io.BytesIO()
                 attatchment = await message.attachments[number].save(bufferedIOBase)
-                attatchments.append(discord.File(fp=bufferedIOBase, filename=message.attachments[number].filename))
+                attachments.append(discord.File(fp=bufferedIOBase, filename=message.attachments[number].filename))
 
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds, files=attatchments)
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds, files=attachments)
             
             
             
