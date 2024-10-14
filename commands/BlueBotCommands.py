@@ -5,6 +5,7 @@ from utils.log import log
 from utils.get_channel_by_name import get_channel_by_name
 from variables.channels import *
 from variables.variables import SERVER, SERVER_OBJ, debug
+import io
 
 
 class BlueBotCommands:
@@ -128,68 +129,23 @@ class BlueBotCommands:
 
         @self.tree.context_menu(name="Send to #rules", guild=SERVER_OBJ)
         async def send_to_rules(interaction: discord.Interaction, message: discord.Message):
-            if interaction.guild_id != SERVER:
-                await interaction.response.send_message(content="This bot is not intended for this server.")
-                return
-            if not isOfficer(interaction=interaction):
-                await interaction.response.send_message("Invalid permissions", ephemeral=True)
-                return
-            target_channel_id = rules_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
-            await interaction.response.send_message("Done", ephemeral=True)
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
+            await send_to_channel(target_channel_id=rules_channel, interaction=interaction, message=message)
 
         @self.tree.context_menu(name="Send to #club-information", guild=SERVER_OBJ)
         async def send_to_club_information(interaction: discord.Interaction, message: discord.Message):
-            if interaction.guild_id != SERVER:
-                await interaction.response.send_message(content="This bot is not intended for this server.")
-                return
-            if not isOfficer(interaction=interaction):
-                await interaction.response.send_message("Invalid permissions", ephemeral=True)
-                return
-            target_channel_id = club_information_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
-            await interaction.response.send_message("Done", ephemeral=True)
+            await send_to_channel(target_channel_id=club_information_channel, interaction=interaction, message=message)
 
         @self.tree.context_menu(name="Send to #resources", guild=SERVER_OBJ)
         async def send_to_resources(interaction: discord.Interaction, message: discord.Message):
-            if interaction.guild_id != SERVER:
-                await interaction.response.send_message(content="This bot is not intended for this server.")
-                return
-            if not isOfficer(interaction=interaction):
-                await interaction.response.send_message("Invalid permissions", ephemeral=True)
-                return
-            target_channel_id = resources_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
-            await interaction.response.send_message("Done", ephemeral=True)
+            await send_to_channel(target_channel_id=resources_channel, interaction=interaction, message=message)
 
         @self.tree.context_menu(name="Send to #stuff-to-check-out", guild=SERVER_OBJ)
         async def send_to_stuff_to_check_out(interaction: discord.Interaction, message: discord.Message):
-            if interaction.guild_id != SERVER:
-                await interaction.response.send_message(content="This bot is not intended for this server.")
-                return
-            if not isOfficer(interaction=interaction):
-                await interaction.response.send_message("Invalid permissions", ephemeral=True)
-                return
-            target_channel_id = stuff_to_check_out_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
-            await interaction.response.send_message("Done", ephemeral=True)
+            await send_to_channel(target_channel_id=stuff_to_check_out_channel, interaction=interaction, message=message)
 
         @self.tree.context_menu(name="Send to #announcements", guild=SERVER_OBJ)
         async def send_to_announcements(interaction: discord.Interaction, message: discord.Message):
-            if interaction.guild_id != SERVER:
-                await interaction.response.send_message(content="This bot is not intended for this server.")
-                return
-            if not isOfficer(interaction=interaction):
-                await interaction.response.send_message("Invalid permissions", ephemeral=True)
-                return
-            target_channel_id = announcements_channel
-            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds)
-            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
-            await interaction.response.send_message("Done", ephemeral=True)
+            await send_to_channel(target_channel_id=announcements_channel, interaction=interaction, message=message)
 
 
         async def check_channel(self, interaction: discord.Interaction, target_channel: str):
@@ -210,3 +166,25 @@ class BlueBotCommands:
                 await interaction.response.send_message(content="Invalid channel ID", ephemeral=True)
                 return None
             return target_channel_id
+        
+        async def send_to_channel(target_channel_id: int, interaction: discord.Interaction, message: discord.Message):
+            
+            if interaction.guild_id != SERVER:
+                await interaction.response.send_message(content="This bot is not intended for this server.")
+                return
+            if not isOfficer(interaction=interaction):
+                await interaction.response.send_message("Invalid permissions", ephemeral=True)
+                return
+            
+            attatchments = []
+            for number in range(0, len(message.attachments)):
+                bufferedIOBase = io.BytesIO()
+                attatchment = await message.attachments[number].save(bufferedIOBase)
+                attatchments.append(discord.File(fp=bufferedIOBase, filename=message.attachments[number].filename))
+
+            new_message = await self.client.get_channel(target_channel_id).send(content=message.content.replace("@.", "@"), allowed_mentions=discord.AllowedMentions.all(), embeds=message.embeds, files=attatchments)
+            
+            
+            
+            await log(client=self.client, content=f"<@{interaction.user.id}> sent {message.jump_url} at {new_message.jump_url}.")
+            await interaction.response.send_message("Done", ephemeral=True)
