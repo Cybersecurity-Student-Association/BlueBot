@@ -120,7 +120,7 @@ class EventThreads:
                     # message = await channel.fetch_message(thread.id)
                     # await message.edit(content=event.name + " (canceled)")
                     await thread.send(f"{event.name} has been canceled.")
-                    await thread.edit(name=event.name + " (canceled)", archived=True, locked=True)
+                    await thread.edit(name=event.name + " (canceled)", archived=True)
                     return
 
         @self.client.event
