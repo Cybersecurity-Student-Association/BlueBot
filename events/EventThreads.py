@@ -167,12 +167,11 @@ class EventThreads:
                 log_data = thread.data["removed_member_ids"][0]
                 print(f'{log_data} left {thread.thread_id}')
             for event in events:
-                if disabled_text in event.description:
-                    if debug >= 1:
-                        print(f"skipped checking {event.name} because invites for the event are disabled.")
-                    return
-
                 if event.name in event_thread.name:
+                    if disabled_text in event.description:
+                        if debug >= 1:
+                            print(f"skipped checking {event.name} because invites for the event are disabled.")
+                        return
                     async for user in event.users(): # users still interested in the event
                         for removed_member_id in thread.data["removed_member_ids"]:
                             removed_member_id = int(removed_member_id)
@@ -181,7 +180,7 @@ class EventThreads:
 
                         
         @self.tree.command(name="toggle-invites", description="Disable BlueBot from adding members to an event thread", guild=SERVER_OBJ)
-        async def disable_thread_invites_for_event(interaction: discord.Interaction):
+        async def toggle_thread_invites_for_event(interaction: discord.Interaction):
             if interaction.guild_id != SERVER:
                 await interaction.response.send_message(content="This bot is not intended for this server.", ephemeral=True)
                 return
