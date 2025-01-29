@@ -64,9 +64,9 @@ class EventThreads:
             await thread.add_user(event.creator)
             epoch = str(event.start_time.timestamp()).split(".")[0]
             if event.description == "":
-                await thread.send(content=f"{event.name} is starting on <t:{epoch}>", file=event.cover_image)
+                await thread.send(content=f"# {event.name}\nTime: <t:{epoch}>", file=event.cover_image)
             else:
-                await thread.send(content=f"{event.name} is starting on <t:{epoch}>\nDescription: {event.description}", file=event.cover_image)
+                await thread.send(content=f"# {event.name}\nTime: <t:{epoch}>\nDescription: {event.description}", file=event.cover_image)
 
         @self.client.event
         async def on_scheduled_event_update(event_before: discord.ScheduledEvent, event_after: discord.ScheduledEvent):
