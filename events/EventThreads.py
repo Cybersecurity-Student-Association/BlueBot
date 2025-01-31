@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from pytz import utc
 
 
-disabled_text = "(invites disabled)"
+disabled_text = "\n(invites disabled)"
 
 class EventThreads:
     def __init__(self, client: discord.Client, tree: discord.app_commands.CommandTree):
