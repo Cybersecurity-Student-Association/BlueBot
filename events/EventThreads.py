@@ -80,32 +80,32 @@ class EventThreads:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (" + thread.name.split("(")[-1])
-                        return
-            elif event_before.status == discord.EventStatus.active and (event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended):
+
+            if event_before.status == discord.EventStatus.active and (event_after.status == discord.EventStatus.completed or event_after.status == discord.EventStatus.ended):
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_before.name + " (finished)", archived=True)
                         await thread.send(f"{event_after.name} is over.")
-                        return
-            elif event_before.status == discord.EventStatus.scheduled and event_after.status == discord.EventStatus.active:
+                        
+            if event_before.status == discord.EventStatus.scheduled and event_after.status == discord.EventStatus.active:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (right now)")
                         await thread.send(f"@everyone {event_after.name} has started.")
-                        return
-            elif event_before.status == discord.EventStatus.active and event_after.status == discord.EventStatus.scheduled:
+                        
+            if event_before.status == discord.EventStatus.active and event_after.status == discord.EventStatus.scheduled:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (scheduled)")
                         epoch = str(event_after.start_time.timestamp()).split(".")[0]
                         await thread.send(f"@everyone {event_after.name} has ended. It will occur again on <t:{epoch}>")
-                        return
-            elif event_before.start_time != event_after.start_time:
+                        
+            if event_before.start_time != event_after.start_time:
                 for thread in threads:
                     if event_before.name in thread.name:
                         epoch = str(event_after.start_time.timestamp()).split(".")[0]
                         await thread.send(content=f'{event_before.name} will start at <t:{epoch}>')
-                        return
+                        
 
         @self.client.event
         async def on_scheduled_event_delete(event: discord.ScheduledEvent):
