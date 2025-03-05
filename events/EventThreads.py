@@ -86,19 +86,22 @@ class EventThreads:
                     if event_before.name in thread.name:
                         await thread.send(f"{event_after.name} is over.")
                         await thread.edit(name=event_before.name + " (finished)", archived=True)
+                        return
                         
             if event_before.status == discord.EventStatus.scheduled and event_after.status == discord.EventStatus.active:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.send(f"@everyone {event_after.name} has started.")
                         await thread.edit(name=event_after.name + " (right now)")
+                        return
                         
             if event_before.status == discord.EventStatus.active and event_after.status == discord.EventStatus.scheduled:
                 for thread in threads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (scheduled)")
                         epoch = str(event_after.start_time.timestamp()).split(".")[0]
-                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again on <t:{epoch}>")
+                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again on <t:{epoch}>").
+                        return
                         
             if event_before.start_time != event_after.start_time:
                 for thread in threads:
