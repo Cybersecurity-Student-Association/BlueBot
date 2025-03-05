@@ -100,7 +100,7 @@ class EventThreads:
                     if event_before.name in thread.name:
                         await thread.edit(name=event_after.name + " (scheduled)")
                         epoch = str(event_after.start_time.timestamp()).split(".")[0]
-                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again on <t:{epoch}>").
+                        await thread.send(f"@everyone {event_after.name} has ended. It will occur again on <t:{epoch}>")
                         return
                         
             if event_before.start_time != event_after.start_time:
