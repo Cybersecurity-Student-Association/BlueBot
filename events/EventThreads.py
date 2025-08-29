@@ -58,6 +58,9 @@ class EventThreads:
             if debug >= 1:
                 print(f'{event.name} created')
 
+            if disabled_text in event.description:
+                return
+
             channel = self.client.get_channel(event_threads_channel)
             # message = await channel.send(event.name + " (scheduled)")
             thread = await channel.create_thread(name=event.name + " (scheduled)", invitable=False)
