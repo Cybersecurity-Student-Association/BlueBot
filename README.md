@@ -1,2 +1,2 @@
 # BlueBot
-Put a valid README here at some point.
+Official Discord Bot of the ODU Cybersecurity Student Association (CS2A).
